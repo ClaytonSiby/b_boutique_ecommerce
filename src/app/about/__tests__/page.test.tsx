@@ -104,7 +104,7 @@ describe('AboutPage', () => {
       expect(screen.getByText('Founder & CEO')).toBeInTheDocument();
       
       expect(screen.getByText('Clayton Siby')).toBeInTheDocument();
-      expect(screen.getByText('Head of Engineering')).toBeInTheDocument();
+      expect(screen.getByText('Lead Software Engineer')).toBeInTheDocument();
     });
 
     it('shows team member images', () => {
