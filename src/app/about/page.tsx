@@ -190,8 +190,8 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-[#d4a574]/15"></div>
               </div>
               <h3 className="text-xl font-bold text-[#3d2c29] mb-1">Clayton Siby</h3>
-              <p className="text-[#b88e72] font-medium mb-3">Head of Engineering</p>
-              <p className="text-gray-600 text-sm">Our head of engineering with a passion for innovation and technology</p>
+              <p className="text-[#b88e72] font-medium mb-3">Lead Software Engineer</p>
+              <p className="text-gray-600 text-sm">Our lead Software Engineer with a passion for innovation and technology</p>
             </div>
           </div>
         </div>
