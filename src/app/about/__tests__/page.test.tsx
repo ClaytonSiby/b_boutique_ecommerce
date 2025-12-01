@@ -3,14 +3,20 @@ import AboutPage from '../page';
 
 // Mock Next.js components
 jest.mock('next/link', () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => {
+  const MockLink = ({ children, href }: { children: React.ReactNode; href: string }) => {
     return <a href={href}>{children}</a>;
   };
+  MockLink.displayName = 'MockLink';
+  return MockLink;
 });
 
+import type { ImageProps } from 'next/image';
+
 jest.mock('next/image', () => {
-  return ({ src, alt, width, height, className }: any) => {
-    return <img src={src} alt={alt} width={width} height={height} className={className} />;
+  const ActualNextImage = jest.requireActual('next/image').default;
+  return {
+    __esModule: true,
+    default: (props: ImageProps) => <ActualNextImage {...props} unoptimized />,
   };
 });
 
