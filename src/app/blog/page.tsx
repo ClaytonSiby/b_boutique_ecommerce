@@ -27,12 +27,7 @@ export default function BlogPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchPosts();
-    fetchCategories();
-  }, [selectedCategory]);
-
-  const fetchPosts = async () => {
+  const fetchPosts = React.useCallback(async () => {
     try {
       setLoading(true);
       const categoryParam = selectedCategory ? `&category=${encodeURIComponent(selectedCategory)}` : '';
@@ -53,9 +48,9 @@ export default function BlogPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory]);
 
-  const fetchCategories = async () => {
+  const fetchCategories = React.useCallback(async () => {
     try {
       const response = await fetch('http://localhost:8000/api/v1/blog/categories');
       if (response.ok) {
@@ -65,7 +60,12 @@ export default function BlogPage() {
     } catch (err) {
       console.error('Error fetching categories:', err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchPosts();
+    fetchCategories();
+  }, [fetchPosts, fetchCategories]);
 
   const filteredPosts = posts.filter(post => 
     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -238,7 +238,7 @@ export default function BlogPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="relative bg-linear-to-br from-[#b88e72] to-[#8b6d5a] rounded-3xl p-12 overflow-hidden">
           <div className="absolute inset-0 bg-[url('/assets/images/newsletter.jpg')] bg-cover bg-center opacity-20"></div>
-          <div className="absolute inset-0 bg-gradient-to-br from-[#d4a574]/20 to-[#b88e72]/20"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-[#d4a574]/20 to-[#b88e72]/20"></div>
           
           <div className="relative z-10 text-center max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
