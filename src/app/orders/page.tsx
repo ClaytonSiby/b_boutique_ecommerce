@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBox, faCheck, faTruck, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { faBox, faCheck, faTruck, faCalendar, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useAuth } from '@/hooks/useAuth';
+import { API_BASE_URL } from '@/lib/constants';
 
 interface OrderItem {
   id: string;
@@ -28,18 +30,27 @@ interface Order {
 }
 
 function OrdersContent() {
+  const searchParams = useSearchParams();
   const { token } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   // Removed unused selectedOrder state
+
+  useEffect(() => {
+    if (searchParams?.get('success') === 'true') {
+      setShowSuccessMessage(true);
+      setTimeout(() => setShowSuccessMessage(false), 5000);
+    }
+  }, [searchParams]);
 
   const fetchOrders = useCallback(async () => {
     if (!token) return;
 
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:8000/api/v1/orders', {
+      const response = await fetch(`${API_BASE_URL}/orders`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -120,6 +131,19 @@ function OrdersContent() {
   return (
     <div className="min-h-screen bg-linear-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
+        {/* Success Message */}
+        {showSuccessMessage && (
+          <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
+            <FontAwesomeIcon icon={faCheckCircle} className="text-green-600 text-2xl" />
+            <div>
+              <h3 className="font-bold text-green-800">Order Placed Successfully!</h3>
+              <p className="text-sm text-green-700">
+                Your order has been confirmed. We&apos;ll send you updates via email.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Page Header */}
         <div className="text-center mb-12">
           <div className="inline-block p-4 bg-white rounded-full shadow-lg mb-4">
