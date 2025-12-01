@@ -1,10 +1,16 @@
 "use client";
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faHeart, faBox, faSignOutAlt, faCog } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { isAuthenticated, user, logout } = useAuth();
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   
   const isActive = (path: string) => {
     if (path === '/') {
@@ -12,6 +18,18 @@ export default function Navbar() {
     }
     return pathname ? pathname.startsWith(path) : false;
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <nav className="w-full backdrop-blur-2xl bg-white/90 border-b border-gray-200/30 fixed top-0 left-0 z-50 shadow-xl shadow-gray-200/50">
@@ -61,10 +79,94 @@ export default function Navbar() {
             <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-[#b88e72] to-[#8b6d5a] text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">3</span>
           </Link>
           
-          {/* Profile */}
-          <Link href="/profile" className="w-10 h-10 flex items-center justify-center text-[#3d2c29] hover:text-[#b88e72] transition-all hover:scale-110 hover:bg-[#f7e6e1]/50 rounded-full">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A9.001 9.001 0 0112 15c2.21 0 4.21.805 5.879 2.146M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          </Link>
+          {/* Profile / Auth */}
+          {isAuthenticated && user ? (
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                className="w-10 h-10 flex items-center justify-center text-[#3d2c29] hover:text-[#b88e72] transition-all hover:scale-110 hover:bg-[#f7e6e1]/50 rounded-full"
+                aria-label="Profile menu"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A9.001 9.001 0 0112 15c2.21 0 4.21.805 5.879 2.146M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {showProfileDropdown && (
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-2xl border border-gray-200/50 py-2 z-50">
+                  {/* User Info */}
+                  <div className="px-4 py-3 border-b border-gray-200">
+                    <p className="text-sm font-medium text-[#3d2c29]">{user.username}</p>
+                    <p className="text-xs text-[#8b6d5a] truncate">{user.email}</p>
+                  </div>
+
+                  {/* Menu Items */}
+                  <Link
+                    href="/profile"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-[#3d2c29] hover:bg-[#f7e6e1]/50 transition-colors"
+                    onClick={() => setShowProfileDropdown(false)}
+                  >
+                    <FontAwesomeIcon icon={faUser} className="w-4 h-4 text-[#b88e72]" />
+                    <span>My Profile</span>
+                  </Link>
+
+                  <Link
+                    href="/favorites"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-[#3d2c29] hover:bg-[#f7e6e1]/50 transition-colors"
+                    onClick={() => setShowProfileDropdown(false)}
+                  >
+                    <FontAwesomeIcon icon={faHeart} className="w-4 h-4 text-[#b88e72]" />
+                    <span>Favorites</span>
+                  </Link>
+
+                  <Link
+                    href="/orders"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-[#3d2c29] hover:bg-[#f7e6e1]/50 transition-colors"
+                    onClick={() => setShowProfileDropdown(false)}
+                  >
+                    <FontAwesomeIcon icon={faBox} className="w-4 h-4 text-[#b88e72]" />
+                    <span>My Orders</span>
+                  </Link>
+
+                  <Link
+                    href="/settings"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-[#3d2c29] hover:bg-[#f7e6e1]/50 transition-colors"
+                    onClick={() => setShowProfileDropdown(false)}
+                  >
+                    <FontAwesomeIcon icon={faCog} className="w-4 h-4 text-[#b88e72]" />
+                    <span>Settings</span>
+                  </Link>
+
+                  <div className="border-t border-gray-200 my-1"></div>
+
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowProfileDropdown(false);
+                    }}
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors w-full text-left"
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} className="w-4 h-4" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <Link
+                href="/login"
+                className="px-4 py-2 text-sm font-medium text-[#3d2c29] hover:text-[#b88e72] transition-colors"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/register"
+                className="px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-[#b88e72] to-[#8b6d5a] hover:from-[#8b6d5a] hover:to-[#b88e72] rounded-full transition-all shadow-md hover:shadow-lg"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
           
           {/* Mobile Menu Button */}
           <button
