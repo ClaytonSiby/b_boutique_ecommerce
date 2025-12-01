@@ -2,8 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faFilter, faHeart, faShoppingCart, faStar, faChevronDown, faTh, faList, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartOutline } from '@fortawesome/free-regular-svg-icons';
+import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 
 interface Product {
   id: string;
@@ -535,38 +539,144 @@ function ProductCard({
   formatPrice: (price: number) => string;
   calculateDiscount: (price: number, salePrice: number) => number;
 }) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const router = useRouter();
+  const { isAuthenticated, token } = useAuth();
+  const { addToCart } = useCart();
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
+  
   const hasDiscount = product.sale_price && product.sale_price < product.price;
   const displayPrice = product.sale_price || product.price;
   const productImage = product.images && product.images.length > 0 
     ? product.images[0] 
     : '/assets/images/placeholder.jpg';
 
+  const checkFavoriteStatus = React.useCallback(async () => {
+    if (!token) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/v1/favorites/check/${product.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setIsFavorited(data.is_favorited);
+      }
+    } catch (error) {
+      console.error('Error checking favorite status:', error);
+    }
+  }, [token, product.id]);
+
+  useEffect(() => {
+    if (isAuthenticated && token) {
+      checkFavoriteStatus();
+    }
+  }, [isAuthenticated, token, product.id, checkFavoriteStatus]);
+
+  const handleToggleFavorite = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      const returnUrl = encodeURIComponent(window.location.pathname);
+      router.push(`/login?returnUrl=${returnUrl}`);
+      return;
+    }
+
+    if (!token) return;
+
+    setIsTogglingFavorite(true);
+    try {
+      if (isFavorited) {
+        const response = await fetch(
+          `http://localhost:8000/api/v1/favorites/${product.id}`,
+          {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          setIsFavorited(false);
+        }
+      } else {
+        const response = await fetch('http://localhost:8000/api/v1/favorites', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ product_id: product.id }),
+        });
+
+        if (response.ok) {
+          setIsFavorited(true);
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    } finally {
+      setIsTogglingFavorite(false);
+    }
+  };
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      const returnUrl = encodeURIComponent(window.location.pathname);
+      router.push(`/login?returnUrl=${returnUrl}`);
+      return;
+    }
+
+    setIsAddingToCart(true);
+    try {
+      await addToCart(product.id, 1);
+    } catch (error: unknown) {
+      console.error('Failed to add to cart:', error);
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
   if (viewMode === 'list') {
     return (
       <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col sm:flex-row">
         {/* Image */}
         <div className="relative w-full sm:w-64 h-64 sm:h-auto overflow-hidden shrink-0">
-          <Image
-            src={productImage}
-            alt={product.name}
-            fill
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
-          />
+          <Link href={`/products/${product.slug}`}>
+            <Image
+              src={productImage}
+              alt={product.name}
+              fill
+              className="object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+          </Link>
           {hasDiscount && (
             <span className="absolute top-4 left-4 px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-full">
               -{calculateDiscount(product.price, product.sale_price!)}%
             </span>
           )}
           <button
-            onClick={() => setIsWishlisted(!isWishlisted)}
-            className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:scale-110 transition-transform"
-            title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            onClick={handleToggleFavorite}
+            disabled={isTogglingFavorite}
+            className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:scale-110 transition-transform disabled:opacity-50"
+            title={isFavorited ? "Remove from wishlist" : "Add to wishlist"}
+            aria-label={isFavorited ? "Remove from wishlist" : "Add to wishlist"}
           >
             <FontAwesomeIcon 
-              icon={faHeart} 
-              className={`w-5 h-5 ${isWishlisted ? 'text-red-500' : 'text-gray-400'}`}
+              icon={isFavorited ? faHeart : faHeartOutline} 
+              className={`w-5 h-5 ${isFavorited ? 'text-red-500' : 'text-gray-400'}`}
             />
           </button>
         </div>
@@ -596,9 +706,13 @@ function ProductCard({
               )}
             </div>
             
-            <button className="px-6 py-3 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white rounded-full hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2">
+            <button 
+              onClick={handleAddToCart}
+              disabled={isAddingToCart}
+              className="px-6 py-3 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white rounded-full hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2 disabled:opacity-50"
+            >
               <FontAwesomeIcon icon={faShoppingCart} className="w-4 h-4" />
-              Add to Cart
+              {isAddingToCart ? 'Adding...' : 'Add to Cart'}
             </button>
           </div>
         </div>
@@ -611,26 +725,29 @@ function ProductCard({
     <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
       {/* Image */}
       <div className="relative h-80 overflow-hidden">
-        <Image
-          src={productImage}
-          alt={product.name}
-          fill
-          className="object-cover group-hover:scale-110 transition-transform duration-500"
-        />
+        <Link href={`/products/${product.slug}`}>
+          <Image
+            src={productImage}
+            alt={product.name}
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+        </Link>
         {hasDiscount && (
           <span className="absolute top-4 left-4 px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-full">
             -{calculateDiscount(product.price, product.sale_price!)}%
           </span>
         )}
         <button
-          onClick={() => setIsWishlisted(!isWishlisted)}
-          className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:scale-110 transition-transform"
-          title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          onClick={handleToggleFavorite}
+          disabled={isTogglingFavorite}
+          className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:scale-110 transition-transform disabled:opacity-50"
+          title={isFavorited ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={isFavorited ? "Remove from wishlist" : "Add to wishlist"}
         >
           <FontAwesomeIcon 
-            icon={faHeart} 
-            className={`w-5 h-5 ${isWishlisted ? 'text-red-500' : 'text-gray-400'}`}
+            icon={isFavorited ? faHeart : faHeartOutline} 
+            className={`w-5 h-5 ${isFavorited ? 'text-red-500' : 'text-gray-400'}`}
           />
         </button>
       </div>
@@ -665,9 +782,13 @@ function ProductCard({
           )}
         </div>
 
-        <button className="w-full px-4 py-3 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white rounded-xl hover:shadow-lg transition-all hover:scale-105 flex items-center justify-center gap-2 font-medium">
+        <button 
+          onClick={handleAddToCart}
+          disabled={isAddingToCart}
+          className="w-full px-4 py-3 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white rounded-xl hover:shadow-lg transition-all hover:scale-105 flex items-center justify-center gap-2 font-medium disabled:opacity-50"
+        >
           <FontAwesomeIcon icon={faShoppingCart} className="w-4 h-4" />
-          Add to Cart
+          {isAddingToCart ? 'Adding...' : 'Add to Cart'}
         </button>
       </div>
     </div>

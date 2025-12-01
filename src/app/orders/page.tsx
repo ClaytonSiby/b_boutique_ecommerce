@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBox, faCheck, faTruck, faCalendar, faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import { faBox, faCheck, faTruck, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -32,7 +32,7 @@ function OrdersContent() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  // Removed unused selectedOrder state
 
   const fetchOrders = useCallback(async () => {
     if (!token) return;
@@ -249,7 +249,7 @@ function OrdersContent() {
                   {/* Actions */}
                   <div className="mt-6 flex gap-3">
                     <button
-                      onClick={() => setSelectedOrder(order)}
+                      // Removed setSelectedOrder usage since selectedOrder state is unused
                       className="flex-1 px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-[#b88e72] to-[#8b6d5a] hover:from-[#8b6d5a] hover:to-[#b88e72] rounded-lg transition-all"
                     >
                       View Details
