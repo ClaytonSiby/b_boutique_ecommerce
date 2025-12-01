@@ -1,4 +1,5 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const API_BASE_URL = `${API_URL}/api/v1`;
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'B Boutique';
 
 export const API_ENDPOINTS = {
@@ -15,6 +16,7 @@ export const API_ENDPOINTS = {
     PRODUCTS: {
         LIST: '/api/v1/products',
         DETAIL: (id: string) => `/api/v1/products/${id}`,
+        BY_SLUG: (slug: string) => `/api/v1/products/slug/${slug}`,
         CREATE: '/api/v1/products',
         UPDATE: (id: string) => `/api/v1/products/${id}`,
         DELETE: (id: string) => `/api/v1/products/${id}`,
@@ -34,6 +36,17 @@ export const API_ENDPOINTS = {
     CATEGORIES: {
         LIST: '/api/v1/categories',
         DETAIL: (id: string) => `/api/v1/categories/${id}`,
+    },
+    FAVORITES: {
+        LIST: '/api/v1/favorites',
+        ADD: '/api/v1/favorites',
+        REMOVE: (id: string) => `/api/v1/favorites/${id}`,
+        CHECK: (id: string) => `/api/v1/favorites/check/${id}`,
+    },
+    BLOG: {
+        LIST: '/api/v1/blog',
+        DETAIL: (slug: string) => `/api/v1/blog/${slug}`,
+        CATEGORIES: '/api/v1/blog/categories',
     },
 } as const;
 

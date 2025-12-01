@@ -5,10 +5,12 @@ import { usePathname } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHeart, faBox, faSignOutAlt, faCog } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 
 export default function Navbar() {
   const pathname = usePathname();
   const { isAuthenticated, user, logout } = useAuth();
+  const { cartItemsCount } = useCart();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
@@ -76,7 +78,11 @@ export default function Navbar() {
           {/* Cart with Badge */}
           <Link href="/cart" className="relative w-10 h-10 flex items-center justify-center text-[#3d2c29] hover:text-[#b88e72] transition-all hover:scale-110 hover:bg-[#f7e6e1]/50 rounded-full">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7a1 1 0 00.9 1.3h12.2a1 1 0 00.9-1.3L17 13M7 13V6a1 1 0 011-1h9a1 1 0 011 1v7"/></svg>
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-[#b88e72] to-[#8b6d5a] text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">3</span>
+            {cartItemsCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-[#b88e72] to-[#8b6d5a] text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">
+                {cartItemsCount}
+              </span>
+            )}
           </Link>
           
           {/* Profile / Auth */}

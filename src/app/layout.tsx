@@ -5,6 +5,7 @@ import "@/lib/fontawesome";
 import Navbar from "@/components/Navbar";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { CartProvider } from "@/contexts/CartContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +33,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <Navbar />
-          <LayoutWrapper>
-            {children}
-          </LayoutWrapper>
+          <CartProvider>
+            <Navbar />
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>
