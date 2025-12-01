@@ -15,9 +15,10 @@ export const productsApi = {
         if (filters?.min_price) params.append('min_price', filters.min_price.toString());
         if (filters?.max_price) params.append('max_price', filters.max_price.toString());
 
-        return apiClient.get<ProductsResponse>(
-            `${API_ENDPOINTS.PRODUCTS.LIST}?${params.toString()}`
+        const products_response = await apiClient.get<ProductsResponse>(
+            `${API_ENDPOINTS.PRODUCTS.LIST}`
         );
+        return products_response;
     },
 
     /**

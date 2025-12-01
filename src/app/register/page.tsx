@@ -148,7 +148,7 @@ export default function RegisterPage() {
                 <p className="mt-1 text-sm text-red-600">{formErrors.password}</p>
               )}
             </div>
-
+            
             <div>
               <label htmlFor="confirmPassword" className="sr-only">
                 Confirm Password
