@@ -2,6 +2,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCcVisa, faCcMastercard, faCcPaypal, faCcApplePay, faCcAmex, faFacebook, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 import { useState } from 'react';
 
@@ -88,16 +90,25 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="flex gap-2 sm:gap-3 md:gap-4 items-center justify-center">
-            <Image src="/assets/images/hero1.jpg" alt="Hero 1" width={180} height={240} className="w-24 h-32 sm:w-32 sm:h-40 md:w-44 md:h-56 lg:w-[180px] lg:h-60 rounded-2xl object-cover shadow-2xl hover:shadow-[#b88e72]/30 transition-all duration-300 hover:scale-105 hover:-rotate-2 ring-2 ring-white/50" />
-            <Image src="/assets/images/hero2.jpg" alt="Hero 2" width={180} height={240} className="w-24 h-32 sm:w-32 sm:h-40 md:w-44 md:h-56 lg:w-[180px] lg:h-60 rounded-2xl object-cover shadow-2xl hover:shadow-[#b88e72]/30 transition-all duration-300 hover:scale-110 ring-2 ring-white/50" />
-            <Image src="/assets/images/hero3.jpg" alt="Hero 3" width={180} height={240} className="hidden sm:block w-32 h-40 md:w-44 md:h-56 lg:w-[180px] lg:h-60 rounded-2xl object-cover shadow-2xl hover:shadow-[#b88e72]/30 transition-all duration-300 hover:scale-105 hover:rotate-2 ring-2 ring-white/50" />
+            <div className="relative w-24 h-32 sm:w-32 sm:h-40 md:w-44 md:h-56 lg:w-[180px] lg:h-60 rounded-2xl overflow-hidden shadow-2xl hover:shadow-[#b88e72]/30 transition-all duration-300 hover:scale-105 hover:-rotate-2 ring-2 ring-white/50 group">
+              <Image src="/assets/images/colour_dress.jpg" alt="Hero 1" width={180} height={240} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-[#d4a574]/15"></div>
+            </div>
+            <div className="relative w-24 h-32 sm:w-32 sm:h-40 md:w-44 md:h-56 lg:w-[180px] lg:h-60 rounded-2xl overflow-hidden shadow-2xl hover:shadow-[#b88e72]/30 transition-all duration-300 hover:scale-110 ring-2 ring-white/50 group">
+              <Image src="/assets/images/perfume.jpg" alt="Hero 2" width={180} height={240} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-[#b88e72]/15"></div>
+            </div>
+            <div className="hidden sm:block relative w-32 h-40 md:w-44 md:h-56 lg:w-[180px] lg:h-60 rounded-2xl overflow-hidden shadow-2xl hover:shadow-[#b88e72]/30 transition-all duration-300 hover:scale-105 hover:rotate-2 ring-2 ring-white/50 group">
+              <Image src="/assets/images/trendy.jpg" alt="Hero 3" width={180} height={240} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-[#e8d5c4]/15"></div>
+            </div>
           </div>
         </div>
         <div className="flex justify-center gap-4 sm:gap-6 md:gap-8 mt-8 flex-wrap">
-          <Image src="/assets/images/brand_chanel.png" alt="Chanel" width={80} height={32} className="w-16 h-auto sm:w-20" />
-          <Image src="/assets/images/brand_prada.png" alt="Prada" width={80} height={32} className="w-16 h-auto sm:w-20" />
-          <Image src="/assets/images/brand_calvinklein.png" alt="Calvin Klein" width={80} height={32} className="w-16 h-auto sm:w-20" />
-          <Image src="/assets/images/brand_emporio.png" alt="Emporio" width={80} height={32} className="w-16 h-auto sm:w-20" />
+          <Image src="/assets/images/chanel_logo.png" alt="Chanel" width={80} height={32} className="w-16 h-auto sm:w-20" />
+          <Image src="/assets/images/prada_logo.png" alt="Prada" width={80} height={32} className="w-16 h-auto sm:w-20" />
+          <Image src="/assets/images/calvin_klein_logo.png" alt="Calvin Klein" width={80} height={32} className="w-16 h-auto sm:w-20" />
+          <Image src="/assets/images/emporio_logo.jpg" alt="Emporio" width={80} height={32} className="w-16 h-auto sm:w-20" />
         </div>
       </section>
 
@@ -312,7 +323,7 @@ export default function LandingPage() {
           {/* Right Image */}
           <div className="relative h-full min-h-[300px] md:min-h-[400px] lg:min-h-[500px]">
             <div className="absolute inset-0">
-              <Image src="/assets/images/featured.jpg" alt="Peaky Blinders Collection" width={600} height={500} className="object-cover w-full h-full" />
+              <Image src="/assets/images/formal.jpg" alt="Peaky Blinders Collection" width={600} height={500} className="object-cover w-full h-full" />
             </div>
             {/* Gradient Overlay on Image */}
             <div className="absolute inset-0 bg-linear-to-r from-[#3d2c29] via-transparent to-transparent opacity-60"></div>
@@ -386,8 +397,9 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
             {/* Dresses */}
             <Link href="/categories/dresses" className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500">
-              <div className="absolute inset-0 bg-linear-to-br from-[#f7e6e1] via-[#e7d6c6] to-[#d7c6b6]"></div>
-              <div className="absolute inset-0 bg-linear-to-t from-[#3d2c29]/80 via-[#3d2c29]/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+              <Image src="/assets/images/dress_.jpg" alt="Dresses" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-[#b88e72]/20"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-[#3d2c29]/90 via-[#3d2c29]/40 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-500"></div>
               
               <div className="relative p-8 h-72 flex flex-col justify-between">
                 <div className="flex justify-between items-start">
@@ -410,8 +422,9 @@ export default function LandingPage() {
             
             {/* Accessories */}
             <Link href="/categories/accessories" className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500">
-              <div className="absolute inset-0 bg-linear-to-br from-[#e7d6c6] via-[#d7c6b6] to-[#c7b6a6]"></div>
-              <div className="absolute inset-0 bg-linear-to-t from-[#3d2c29]/80 via-[#3d2c29]/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+              <Image src="/assets/images/deals.jpg" alt="Accessories" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-[#d4a574]/20"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-[#3d2c29]/90 via-[#3d2c29]/40 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-500"></div>
               
               <div className="relative p-8 h-72 flex flex-col justify-between">
                 <div className="flex justify-between items-start">
@@ -434,8 +447,9 @@ export default function LandingPage() {
             
             {/* Footwear */}
             <Link href="/categories/shoes" className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500">
-              <div className="absolute inset-0 bg-linear-to-br from-[#d4dae4] via-[#c4cad4] to-[#b4bac4]"></div>
-              <div className="absolute inset-0 bg-linear-to-t from-[#3d2c29]/80 via-[#3d2c29]/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+              <Image src="/assets/images/sneakers_.jpg" alt="Footwear" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-[#6b8cae]/20"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-[#3d2c29]/90 via-[#3d2c29]/40 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-500"></div>
               
               <div className="relative p-8 h-72 flex flex-col justify-between">
                 <div className="flex justify-between items-start">
@@ -458,8 +472,9 @@ export default function LandingPage() {
             
             {/* Bags */}
             <Link href="/categories/bags" className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500">
-              <div className="absolute inset-0 bg-linear-to-br from-[#e8e8e8] via-[#d8d8d8] to-[#c8c8c8]"></div>
-              <div className="absolute inset-0 bg-linear-to-t from-[#3d2c29]/80 via-[#3d2c29]/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+              <Image src="/assets/images/handbag.jpg" alt="Bags" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-[#e8d5c4]/20"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-[#3d2c29]/90 via-[#3d2c29]/40 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-500"></div>
               
               <div className="relative p-8 h-72 flex flex-col justify-between">
                 <div className="flex justify-between items-start">
@@ -515,7 +530,8 @@ export default function LandingPage() {
             <Link href="/blog/summer-trends" className="group">
               <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                 <div className="h-48 bg-linear-to-br from-[#f7e6e1] to-[#e7d6c6] relative overflow-hidden">
-                  <Image src="/assets/images/blog1.jpg" alt="Summer Trends" width={400} height={192} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <Image src="/assets/images/summer_style.jpg" alt="Summer Trends" width={400} height={192} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-[#f7a76c]/20"></div>
                 </div>
                 <div className="p-6">
                   <span className="text-xs text-[#b88e72] font-semibold">FASHION TRENDS</span>
@@ -529,7 +545,8 @@ export default function LandingPage() {
             <Link href="/blog/styling-guide" className="group">
               <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                 <div className="h-48 bg-linear-to-br from-[#e7d6c6] to-[#d7c6b6] relative overflow-hidden">
-                  <Image src="/assets/images/blog2.jpg" alt="Styling Guide" width={400} height={192} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <Image src="/assets/images/mix_and_match.jpg" alt="Styling Guide" width={400} height={192} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-[#b88e72]/20"></div>
                 </div>
                 <div className="p-6">
                   <span className="text-xs text-[#b88e72] font-semibold">STYLING TIPS</span>
@@ -543,7 +560,8 @@ export default function LandingPage() {
             <Link href="/blog/accessories" className="group">
               <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                 <div className="h-48 bg-linear-to-br from-[#d4dae4] to-[#c4cad4] relative overflow-hidden">
-                  <Image src="/assets/images/blog3.jpg" alt="Accessories" width={400} height={192} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <Image src="/assets/images/accessories.jpg" alt="Accessories" width={400} height={192} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-[#9ca8c4]/20"></div>
                 </div>
                 <div className="p-6">
                   <span className="text-xs text-[#b88e72] font-semibold">ACCESSORIES</span>
@@ -618,13 +636,15 @@ export default function LandingPage() {
             </form>
           </div>
           <div className="flex-1 flex justify-center gap-3 sm:gap-4">
-            <div className="relative group">
+            <div className="relative group overflow-hidden rounded-2xl">
               <div className="absolute inset-0 bg-linear-to-br from-[#b88e72] to-[#8b6d5a] rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
-              <Image src="/assets/images/newsletter1.jpg" alt="Newsletter 1" width={200} height={280} className="relative rounded-2xl object-cover shadow-2xl ring-2 ring-white/50 group-hover:scale-105 transition-transform duration-300 w-32 h-44 sm:w-40 sm:h-56 md:w-[200px] md:h-[280px]" />
+              <Image src="/assets/images/newsletter_1.jpg" alt="Newsletter 1" width={200} height={280} className="relative rounded-2xl object-cover shadow-2xl ring-2 ring-white/50 group-hover:scale-105 transition-transform duration-300 w-32 h-44 sm:w-40 sm:h-56 md:w-[200px] md:h-[280px]" />
+              <div className="absolute inset-0 bg-[#e8d5c4]/15 rounded-2xl"></div>
             </div>
-            <div className="relative group mt-6 sm:mt-8">
+            <div className="relative group mt-6 sm:mt-8 overflow-hidden rounded-2xl">
               <div className="absolute inset-0 bg-linear-to-br from-[#8b6d5a] to-[#b88e72] rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
-              <Image src="/assets/images/newsletter2.jpg" alt="Newsletter 2" width={200} height={280} className="relative rounded-2xl object-cover shadow-2xl ring-2 ring-white/50 group-hover:scale-105 transition-transform duration-300 w-32 h-44 sm:w-40 sm:h-56 md:w-[200px] md:h-[280px]" />
+              <Image src="/assets/images/newsletter_2.jpg" alt="Newsletter 2" width={200} height={280} className="relative rounded-2xl object-cover shadow-2xl ring-2 ring-white/50 group-hover:scale-105 transition-transform duration-300 w-32 h-44 sm:w-40 sm:h-56 md:w-[200px] md:h-[280px]" />
+              <div className="absolute inset-0 bg-[#b88e72]/15 rounded-2xl"></div>
             </div>
           </div>
         </div>
@@ -647,14 +667,14 @@ export default function LandingPage() {
             <div>
               <h4 className="font-bold text-[#f7e6e1] mb-6 text-lg">Connect With Us</h4>
               <div className="flex gap-4">
-                <a href="https://facebook.com" target="_blank" rel="noopener" title="Facebook" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-[#b88e72] text-[#f7e6e1] transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-[#b88e72]/50">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.6 0 0 .6 0 1.326v21.348C0 23.4.6 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.4 24 24 23.4 24 22.674V1.326C24 .6 23.4 0 22.675 0"/></svg>
+                <a href="https://facebook.com" target="_blank" rel="noopener" title="Facebook" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-[#1877F2] transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                  <FontAwesomeIcon icon={faFacebook} className="w-5 h-5 text-[#1877F2] hover:text-white transition-colors" />
                 </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener" title="Twitter" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-[#b88e72] text-[#f7e6e1] transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-[#b88e72]/50">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557a9.83 9.83 0 01-2.828.775 4.932 4.932 0 002.165-2.724c-.951.555-2.005.959-3.127 1.184A4.916 4.916 0 0016.616 3c-2.717 0-4.92 2.206-4.92 4.917 0 .386.044.762.127 1.124C7.728 8.77 4.1 6.797 1.671 3.149c-.423.724-.666 1.562-.666 2.475 0 1.708.87 3.216 2.188 4.099a4.904 4.904 0 01-2.229-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.936 4.936 0 01-2.224.084c.627 1.956 2.444 3.377 4.6 3.417A9.867 9.867 0 010 21.543a13.94 13.94 0 007.548 2.212c9.058 0 14.009-7.513 14.009-14.009 0-.213-.005-.425-.014-.636A10.025 10.025 0 0024 4.557z"/></svg>
+                <a href="https://twitter.com" target="_blank" rel="noopener" title="Twitter" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-[#1DA1F2] transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                  <FontAwesomeIcon icon={faTwitter} className="w-5 h-5 text-[#1DA1F2] hover:text-white transition-colors" />
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener" title="Instagram" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-[#b88e72] text-[#f7e6e1] transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-[#b88e72]/50">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.974 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.975-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.974-1.246-2.242-1.308-3.608C2.013 8.332 2 8.741 2 12c0 3.259.013 3.668.072 4.948.059 1.282.342 2.394 1.322 3.374.98.98 2.092 1.263 3.374 1.322C8.332 23.987 8.741 24 12 24c3.259 0 3.668-.013 4.948-.072 1.282-.059 2.394-.342 3.374-1.322.98-.98 1.263-2.092 1.322-3.374.059-1.28.072-1.689.072-4.948 0-3.259-.013-3.668-.072-4.948-.059-1.282-.342-2.394-1.322-3.374-.98-.98-2.092-1.263-3.374-1.322C15.668.013 15.259 0 12 0z"/><circle cx="12" cy="12" r="3.5"/></svg>
+                <a href="https://instagram.com" target="_blank" rel="noopener" title="Instagram" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-linear-to-br hover:from-[#833AB4] hover:via-[#E1306C] hover:to-[#F77737] transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                  <FontAwesomeIcon icon={faInstagram} className="w-5 h-5 text-[#E1306C] hover:text-white transition-colors" />
                 </a>
               </div>
             </div>
@@ -686,20 +706,17 @@ export default function LandingPage() {
             <div>
               <h4 className="font-bold text-[#f7e6e1] mb-6 text-lg">Secure Payments</h4>
               <div className="flex gap-3 flex-wrap">
-                <div className="w-12 h-8 bg-white/10 backdrop-blur-sm rounded flex items-center justify-center hover:bg-white/20 transition-all">
-                  <Image src="/assets/images/payments/visa.svg" alt="Visa" width={32} height={20} />
+                <div className="w-12 h-8 bg-white rounded flex items-center justify-center hover:scale-110 transition-all shadow-md">
+                  <FontAwesomeIcon icon={faCcVisa} className="text-[#1A1F71] text-2xl" />
                 </div>
-                <div className="w-12 h-8 bg-white/10 backdrop-blur-sm rounded flex items-center justify-center hover:bg-white/20 transition-all">
-                  <Image src="/assets/images/payments/mastercard.svg" alt="Mastercard" width={32} height={20} />
+                <div className="w-12 h-8 bg-white rounded flex items-center justify-center hover:scale-110 transition-all shadow-md">
+                  <FontAwesomeIcon icon={faCcMastercard} className="text-[#FF5F00] text-2xl" />
                 </div>
-                <div className="w-12 h-8 bg-white/10 backdrop-blur-sm rounded flex items-center justify-center hover:bg-white/20 transition-all">
-                  <Image src="/assets/images/payments/paypal.svg" alt="PayPal" width={32} height={20} />
+                <div className="w-12 h-8 bg-white rounded flex items-center justify-center hover:scale-110 transition-all shadow-md">
+                  <FontAwesomeIcon icon={faCcPaypal} className="text-[#003087] text-2xl" />
                 </div>
-                <div className="w-12 h-8 bg-white/10 backdrop-blur-sm rounded flex items-center justify-center hover:bg-white/20 transition-all">
-                  <Image src="/assets/images/payments/applepay.svg" alt="Apple Pay" width={32} height={20} />
-                </div>
-                <div className="w-12 h-8 bg-white/10 backdrop-blur-sm rounded flex items-center justify-center hover:bg-white/20 transition-all">
-                  <Image src="/assets/images/payments/amex.svg" alt="Amex" width={32} height={20} />
+                <div className="w-12 h-8 bg-white rounded flex items-center justify-center hover:scale-110 transition-all shadow-md">
+                  <FontAwesomeIcon icon={faCcApplePay} className="text-black text-2xl" />
                 </div>
               </div>
             </div>
