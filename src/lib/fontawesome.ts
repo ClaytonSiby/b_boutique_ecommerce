@@ -26,6 +26,12 @@ import {
     faCreditCard,
     faTruck,
     faGlobe,
+    faCalendar,
+    faEye,
+    faTag,
+    faArrowRight,
+    faArrowLeft,
+    faShare,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -76,6 +82,12 @@ library.add(
     faCreditCard,
     faTruck,
     faGlobe,
+    faCalendar,
+    faEye,
+    faTag,
+    faArrowRight,
+    faArrowLeft,
+    faShare,
     // Regular icons
     farStar,
     farHeart,

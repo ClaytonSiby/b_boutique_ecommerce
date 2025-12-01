@@ -1,8 +1,18 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
+  const pathname = usePathname();
+  
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return pathname === '/';
+    }
+    return pathname ? pathname.startsWith(path) : false;
+  };
+
   return (
     <nav className="w-full backdrop-blur-2xl bg-white/90 border-b border-gray-200/30 fixed top-0 left-0 z-50 shadow-xl shadow-gray-200/50">
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-5 flex items-center justify-between">
@@ -16,25 +26,25 @@ export default function Navbar() {
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-1">
-          <Link href="/" className="relative px-4 py-2 text-[#3d2c29] hover:text-[#b88e72] font-medium transition-all group">
+          <Link href="/" className={`relative px-4 py-2 font-medium transition-all group ${isActive('/') ? 'text-[#b88e72]' : 'text-[#3d2c29] hover:text-[#b88e72]'}`}>
             <span className="relative z-10">Home</span>
-            <div className="absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className={`absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full transition-opacity ${isActive('/') ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
           </Link>
-          <Link href="/products" className="relative px-4 py-2 text-[#3d2c29] hover:text-[#b88e72] font-medium transition-all group">
+          <Link href="/products" className={`relative px-4 py-2 font-medium transition-all group ${isActive('/products') ? 'text-[#b88e72]' : 'text-[#3d2c29] hover:text-[#b88e72]'}`}>
             <span className="relative z-10">Shop</span>
-            <div className="absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className={`absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full transition-opacity ${isActive('/products') ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
           </Link>
-          <Link href="/about" className="relative px-4 py-2 text-[#3d2c29] hover:text-[#b88e72] font-medium transition-all group">
+          <Link href="/about" className={`relative px-4 py-2 font-medium transition-all group ${isActive('/about') ? 'text-[#b88e72]' : 'text-[#3d2c29] hover:text-[#b88e72]'}`}>
             <span className="relative z-10">About</span>
-            <div className="absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className={`absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full transition-opacity ${isActive('/about') ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
           </Link>
-          <Link href="/blog" className="relative px-4 py-2 text-[#3d2c29] hover:text-[#b88e72] font-medium transition-all group">
+          <Link href="/blog" className={`relative px-4 py-2 font-medium transition-all group ${isActive('/blog') ? 'text-[#b88e72]' : 'text-[#3d2c29] hover:text-[#b88e72]'}`}>
             <span className="relative z-10">Blog</span>
-            <div className="absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className={`absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full transition-opacity ${isActive('/blog') ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
           </Link>
-          <Link href="/contact" className="relative px-4 py-2 text-[#3d2c29] hover:text-[#b88e72] font-medium transition-all group">
+          <Link href="/contact" className={`relative px-4 py-2 font-medium transition-all group ${isActive('/contact') ? 'text-[#b88e72]' : 'text-[#3d2c29] hover:text-[#b88e72]'}`}>
             <span className="relative z-10">Contact</span>
-            <div className="absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className={`absolute inset-0 bg-linear-to-r from-[#b88e72]/10 to-[#8b6d5a]/10 rounded-full transition-opacity ${isActive('/contact') ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
           </Link>
         </div>
         
