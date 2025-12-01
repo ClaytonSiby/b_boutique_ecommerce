@@ -49,6 +49,8 @@ function CheckoutContent() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<string>('card');
+  // Removed unused pendingOrderId state
 
   const [addressForm, setAddressForm] = useState({
     type: 'shipping',
@@ -222,6 +224,11 @@ function CheckoutContent() {
       return;
     }
 
+    if (!paymentMethod) {
+      alert('Please select a payment method');
+      return;
+    }
+
     if (!cart?.cart_items || cart.cart_items.length === 0) {
       alert('Your cart is empty');
       return;
@@ -239,6 +246,7 @@ function CheckoutContent() {
       const orderData = {
         shipping_address_id: selectedShippingAddress,
         billing_address_id: sameAsShipping ? selectedShippingAddress : selectedBillingAddress,
+        payment_method: paymentMethod,
         items: orderItems,
       };
 
@@ -253,8 +261,16 @@ function CheckoutContent() {
 
       if (response.ok) {
         const order = await response.json();
-        await clearCart();
-        router.push(`/orders?success=true&orderId=${order.id}`);
+        
+        // For COD, complete the order immediately
+        if (paymentMethod === 'cod') {
+          await clearCart();
+          router.push(`/orders?success=true&orderId=${order.id}`);
+        } else {
+          // For card/PayPal, redirect to payment page
+          // Removed setPendingOrderId as it's unused
+          router.push(`/checkout/payment?orderId=${order.id}&method=${paymentMethod}`);
+        }
       } else {
         const error = await response.json();
         alert(`Failed to place order: ${error.detail || 'Unknown error'}`);
@@ -531,6 +547,105 @@ function CheckoutContent() {
                 </div>
               )}
             </div>
+
+            {/* Payment Method Section */}
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-[#b88e72] text-white flex items-center justify-center">
+                  <FontAwesomeIcon icon={faCreditCard} />
+                </div>
+                <h2 className="text-2xl font-bold text-[#3d2c29]">Payment Method</h2>
+              </div>
+
+              <div className="space-y-3">
+                {/* Credit/Debit Card */}
+                <label
+                  className={`block p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    paymentMethod === 'card'
+                      ? 'border-[#b88e72] bg-[#f7e6e1]'
+                      : 'border-gray-200 hover:border-[#b88e72]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="card"
+                      checked={paymentMethod === 'card'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      className="w-4 h-4 text-[#b88e72]"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <FontAwesomeIcon icon={faCreditCard} className="text-[#b88e72]" />
+                        <span className="font-semibold text-[#3d2c29]">Credit/Debit Card</span>
+                      </div>
+                      <p className="text-sm text-[#8b6d5a] mt-1">
+                        Pay securely with your credit or debit card
+                      </p>
+                    </div>
+                  </div>
+                </label>
+
+                {/* PayPal */}
+                <label
+                  className={`block p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    paymentMethod === 'paypal'
+                      ? 'border-[#b88e72] bg-[#f7e6e1]'
+                      : 'border-gray-200 hover:border-[#b88e72]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="paypal"
+                      checked={paymentMethod === 'paypal'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      className="w-4 h-4 text-[#b88e72]"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <FontAwesomeIcon icon={faCreditCard} className="text-[#0070ba]" />
+                        <span className="font-semibold text-[#3d2c29]">PayPal</span>
+                      </div>
+                      <p className="text-sm text-[#8b6d5a] mt-1">
+                        Fast and secure payment with PayPal
+                      </p>
+                    </div>
+                  </div>
+                </label>
+
+                {/* Cash on Delivery */}
+                <label
+                  className={`block p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    paymentMethod === 'cod'
+                      ? 'border-[#b88e72] bg-[#f7e6e1]'
+                      : 'border-gray-200 hover:border-[#b88e72]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="cod"
+                      checked={paymentMethod === 'cod'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      className="w-4 h-4 text-[#b88e72]"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <FontAwesomeIcon icon={faCheckCircle} className="text-[#b88e72]" />
+                        <span className="font-semibold text-[#3d2c29]">Cash on Delivery</span>
+                      </div>
+                      <p className="text-sm text-[#8b6d5a] mt-1">
+                        Pay when you receive your order
+                      </p>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
           </div>
 
           {/* Right Column - Order Summary */}
@@ -577,6 +692,16 @@ function CheckoutContent() {
                   <span>Tax (10%)</span>
                   <span>{formatPrice(tax)}</span>
                 </div>
+                {paymentMethod && (
+                  <div className="flex justify-between text-[#8b6d5a] text-sm pt-2 border-t border-gray-100">
+                    <span>Payment Method</span>
+                    <span className="font-medium capitalize">
+                      {paymentMethod === 'card' && '💳 Card'}
+                      {paymentMethod === 'paypal' && '💰 PayPal'}
+                      {paymentMethod === 'cod' && '💵 Cash on Delivery'}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between text-xl font-bold text-[#3d2c29] pt-2 border-t border-gray-200">
                   <span>Total</span>
                   <span className="text-[#b88e72]">{formatPrice(total)}</span>
@@ -585,7 +710,7 @@ function CheckoutContent() {
 
               <button
                 onClick={handlePlaceOrder}
-                disabled={isProcessing || !selectedShippingAddress}
+                disabled={isProcessing || !selectedShippingAddress || !paymentMethod}
                 className="w-full mt-6 py-4 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] hover:from-[#8b6d5a] hover:to-[#b88e72] text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isProcessing ? (
@@ -595,8 +720,8 @@ function CheckoutContent() {
                   </>
                 ) : (
                   <>
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                    Place Order
+                    <FontAwesomeIcon icon={paymentMethod === 'cod' ? faCheckCircle : faCreditCard} />
+                    {paymentMethod === 'cod' ? 'Place Order' : 'Proceed to Payment'}
                   </>
                 )}
               </button>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBox, faCheck, faTruck, faCalendar, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
@@ -36,6 +37,7 @@ function OrdersContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [cancellingOrderId, setCancellingOrderId] = useState<string | null>(null);
   // Removed unused selectedOrder state
 
   useEffect(() => {
@@ -87,6 +89,43 @@ function OrdersContent() {
       hour: '2-digit',
       minute: '2-digit',
     });
+  };
+
+  const handleCancelOrder = async (orderId: string) => {
+    if (!confirm('Are you sure you want to cancel this order? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      setCancellingOrderId(orderId);
+      const response = await fetch(`${API_BASE_URL}/orders/${orderId}/cancel`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to cancel order');
+      }
+
+      // Refresh orders list
+      await fetchOrders();
+      setShowSuccessMessage(true);
+      setTimeout(() => setShowSuccessMessage(false), 5000);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to cancel order';
+      setError(errorMessage);
+      setTimeout(() => setError(''), 5000);
+    } finally {
+      setCancellingOrderId(null);
+    }
+  };
+
+  const canCancelOrder = (status: string) => {
+    const lowerStatus = status.toLowerCase();
+    return !['shipped', 'delivered', 'cancelled', 'refunded'].includes(lowerStatus);
   };
 
   const getStatusColor = (status: string) => {
@@ -272,15 +311,27 @@ function OrdersContent() {
 
                   {/* Actions */}
                   <div className="mt-6 flex gap-3">
-                    <button
-                      // Removed setSelectedOrder usage since selectedOrder state is unused
-                      className="flex-1 px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-[#b88e72] to-[#8b6d5a] hover:from-[#8b6d5a] hover:to-[#b88e72] rounded-lg transition-all"
+                    <Link
+                      href={`/orders/${order.id}`}
+                      className="flex-1 px-4 py-2 text-sm font-medium text-center text-white bg-linear-to-r from-[#b88e72] to-[#8b6d5a] hover:from-[#8b6d5a] hover:to-[#b88e72] rounded-lg transition-all"
                     >
                       View Details
-                    </button>
-                    <button className="px-4 py-2 text-sm font-medium text-[#3d2c29] bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                    </Link>
+                    <Link
+                      href={`/orders/${order.id}#tracking`}
+                      className="px-4 py-2 text-sm font-medium text-[#3d2c29] bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    >
                       Track Order
-                    </button>
+                    </Link>
+                    {canCancelOrder(order.status) && (
+                      <button
+                        onClick={() => handleCancelOrder(order.id)}
+                        disabled={cancellingOrderId === order.id}
+                        className="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed rounded-lg transition-colors"
+                      >
+                        {cancellingOrderId === order.id ? 'Cancelling...' : 'Cancel Order'}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
