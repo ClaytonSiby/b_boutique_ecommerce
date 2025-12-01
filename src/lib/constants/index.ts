@@ -32,6 +32,7 @@ export const API_ENDPOINTS = {
         LIST: '/api/v1/orders',
         DETAIL: (id: string) => `/api/v1/orders/${id}`,
         CREATE: '/api/v1/orders',
+        CANCEL: (id: string) => `/api/v1/orders/${id}/cancel`,
     },
     CATEGORIES: {
         LIST: '/api/v1/categories',
