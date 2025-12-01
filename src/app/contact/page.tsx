@@ -66,7 +66,7 @@ export default function ContactPage() {
                 <h3 className="text-lg font-bold text-[#3d2c29] mb-2">Email Us</h3>
                 <p className="text-gray-600 text-sm mb-2">Drop us a line anytime</p>
                 <a href="mailto:info@benedettoboutique.co.za" className="text-[#b88e72] hover:text-[#8b6d5a] transition-colors text-sm font-medium">
-                  info@benedettoboutique.co.za
+                  claytonsiby@gmail.com
                 </a>
               </div>
 
@@ -77,8 +77,8 @@ export default function ContactPage() {
                 </div>
                 <h3 className="text-lg font-bold text-[#3d2c29] mb-2">Call Us</h3>
                 <p className="text-gray-600 text-sm mb-2">Mon-Fri 9am-6pm</p>
-                <a href="tel:+27793055616" className="text-[#b88e72] hover:text-[#8b6d5a] transition-colors text-sm font-medium">
-                  +27 79 305 5616
+                <a href="tel:+27845860645" className="text-[#b88e72] hover:text-[#8b6d5a] transition-colors text-sm font-medium">
+                  +27 84 586 0645
                 </a>
               </div>
 
