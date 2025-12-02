@@ -50,6 +50,7 @@ function ProfileContent() {
       setSaveMessage('Profile updated successfully!');
       setTimeout(() => setSaveMessage(''), 3000);
     } catch (error) {
+      console.error(error);
       setSaveMessage('Failed to update profile. Please try again.');
     } finally {
       setIsSaving(false);
@@ -73,7 +74,7 @@ function ProfileContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Page Header */}
         <div className="text-center mb-8">
