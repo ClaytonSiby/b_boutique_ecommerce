@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhone, faMapMarkerAlt, faClock } from '@fortawesome/free-solid-svg-icons';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api/v1';
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -13,6 +15,7 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -22,16 +25,33 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage('');
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    try {
+      const response = await fetch(`${API_BASE_URL}/contact/messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
       
-      // Reset success message after 5 seconds
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-    }, 1500);
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.detail || 'Failed to send message');
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      setErrorMessage('An error occurred. Please try again later.');
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -120,7 +140,13 @@ export default function ContactPage() {
 
                 {submitStatus === 'success' && (
                   <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-                    <p className="text-green-700 text-sm font-medium">✓ Thank you! Your message has been sent successfully.</p>
+                    <p className="text-green-700 text-sm font-medium">✓ Thank you! Your message has been sent successfully. We'll get back to you within 24 hours.</p>
+                  </div>
+                )}
+                
+                {submitStatus === 'error' && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                    <p className="text-red-700 text-sm font-medium">✗ {errorMessage}</p>
                   </div>
                 )}
 
