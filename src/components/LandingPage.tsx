@@ -2,6 +2,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import NewsletterForm from './NewsletterForm';
+import NewArrivals from './NewArrivals';
 
 export default function LandingPage() {
   return (
@@ -69,147 +71,7 @@ export default function LandingPage() {
       </section>
 
       {/* New Arrivals */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-linear-to-br from-[#b88e72] to-[#8b6d5a] bg-clip-text text-transparent mb-4">New Arrivals</h2>
-            <p className="text-sm sm:text-base text-gray-500 max-w-2xl mx-auto px-4">Discover our latest collection featuring the newest trends in fashion. Carefully curated pieces that blend style with comfort.</p>
-          </div>
-          
-          {/* Category Filters */}
-          <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 mb-8 md:mb-12 flex-wrap px-2">
-            <button className="px-4 sm:px-6 py-2 rounded-full bg-linear-to-r from-[#3d2c29] to-[#2d1f1c] text-white font-medium hover:shadow-xl hover:shadow-[#3d2c29]/30 transition-all duration-300 hover:scale-105 text-sm sm:text-base">Women&apos;s Fashion</button>
-            <button className="px-4 sm:px-6 py-2 rounded-full bg-white text-[#3d2c29] font-medium hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-[#b88e72] hover:scale-105 hover:shadow-lg text-sm sm:text-base">Men&apos;s Fashion</button>
-            <button className="px-4 sm:px-6 py-2 rounded-full bg-white text-[#3d2c29] font-medium hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-[#b88e72] hover:scale-105 hover:shadow-lg text-sm sm:text-base">Women Accessories</button>
-            <button className="px-4 sm:px-6 py-2 rounded-full bg-white text-[#3d2c29] font-medium hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-[#b88e72] hover:scale-105 hover:shadow-lg text-sm sm:text-base">Men Accessories</button>
-            <button className="px-4 sm:px-6 py-2 rounded-full bg-white text-[#3d2c29] font-medium hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-[#b88e72] hover:scale-105 hover:shadow-lg text-sm sm:text-base">Discount Deals</button>
-          </div>
-
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
-            {/* Product Card 1 */}
-            <div className="group bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#b88e72]/20 transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="bg-linear-to-br from-[#e7d6c6] to-[#d4c5b6] h-64 flex items-center justify-center overflow-hidden">
-                <Image src="/assets/images/new1.jpg" alt="Shiny Dress" width={240} height={240} className="object-cover h-full w-full group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              <div className="p-6">
-                <h3 className="font-semibold text-[#3d2c29] text-lg mb-1">Shiny Dress</h3>
-                <p className="text-gray-500 text-sm mb-2">Al Karam</p>
-                <div className="flex gap-1 mb-2 text-[#ffa500]">
-                  {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
-                </div>
-                <p className="text-gray-500 text-sm mb-3">(4.1k) Customer Reviews</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-[#3d2c29]">$95.50</span>
-                  <span className="text-red-500 text-sm">Almost Sold Out</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 2 */}
-            <div className="group bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#b88e72]/20 transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="bg-linear-to-br from-[#e0d5c7] to-[#d0c5b7] h-64 flex items-center justify-center overflow-hidden">
-                <Image src="/assets/images/new2.jpg" alt="Long Dress" width={240} height={240} className="object-cover h-full w-full group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              <div className="p-6">
-                <h3 className="font-semibold text-[#3d2c29] text-lg mb-1">Long Dress</h3>
-                <p className="text-gray-500 text-sm mb-2">Al Karam</p>
-                <div className="flex gap-1 mb-2 text-[#ffa500]">
-                  {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
-                </div>
-                <p className="text-gray-500 text-sm mb-3">(4.1k) Customer Reviews</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-[#3d2c29]">$95.50</span>
-                  <span className="text-red-500 text-sm">Almost Sold Out</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 3 */}
-            <div className="group bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#b88e72]/20 transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="bg-linear-to-br from-[#d4e4dc] to-[#c4d4cc] h-64 flex items-center justify-center overflow-hidden">
-                <Image src="/assets/images/new3.jpg" alt="Full Sweater" width={240} height={240} className="object-cover h-full w-full group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              <div className="p-6">
-                <h3 className="font-semibold text-[#3d2c29] text-lg mb-1">Full Sweater</h3>
-                <p className="text-gray-500 text-sm mb-2">Al Karam</p>
-                <div className="flex gap-1 mb-2 text-[#ffa500]">
-                  {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
-                </div>
-                <p className="text-gray-500 text-sm mb-3">(4.1k) Customer Reviews</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-[#3d2c29]">$95.50</span>
-                  <span className="text-red-500 text-sm">Almost Sold Out</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 4 */}
-            <div className="group bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#b88e72]/20 transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="bg-linear-to-br from-[#e7d6c6] to-[#d7c6b6] h-64 flex items-center justify-center overflow-hidden">
-                <Image src="/assets/images/new4.jpg" alt="White Dress" width={240} height={240} className="object-cover h-full w-full group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              <div className="p-6">
-                <h3 className="font-semibold text-[#3d2c29] text-lg mb-1">White Dress</h3>
-                <p className="text-gray-500 text-sm mb-2">Al Karam</p>
-                <div className="flex gap-1 mb-2 text-[#ffa500]">
-                  {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
-                </div>
-                <p className="text-gray-500 text-sm mb-3">(4.1k) Customer Reviews</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-[#3d2c29]">$95.50</span>
-                  <span className="text-red-500 text-sm">Almost Sold Out</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 5 */}
-            <div className="group bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#b88e72]/20 transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="bg-linear-to-br from-[#d4dae4] to-[#c4cad4] h-64 flex items-center justify-center overflow-hidden">
-                <Image src="/assets/images/new5.jpg" alt="Colorful Dress" width={240} height={240} className="object-cover h-full w-full group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              <div className="p-6">
-                <h3 className="font-semibold text-[#3d2c29] text-lg mb-1">Colorful Dress</h3>
-                <p className="text-gray-500 text-sm mb-2">Al Karam</p>
-                <div className="flex gap-1 mb-2 text-[#ffa500]">
-                  {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
-                </div>
-                <p className="text-gray-500 text-sm mb-3">(4.1k) Customer Reviews</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-[#3d2c29]">$95.50</span>
-                  <span className="text-red-500 text-sm">Almost Sold Out</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 6 */}
-            <div className="group bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#b88e72]/20 transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="bg-linear-to-br from-[#e8e8e8] to-[#d8d8d8] h-64 flex items-center justify-center overflow-hidden">
-                <Image src="/assets/images/new6.jpg" alt="White Shirt" width={240} height={240} className="object-cover h-full w-full group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              <div className="p-6">
-                <h3 className="font-semibold text-[#3d2c29] text-lg mb-1">White Shirt</h3>
-                <p className="text-gray-500 text-sm mb-2">Al Karam</p>
-                <div className="flex gap-1 mb-2 text-[#ffa500]">
-                  {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
-                </div>
-                <p className="text-gray-500 text-sm mb-3">(4.1k) Customer Reviews</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-[#3d2c29]">$95.50</span>
-                  <span className="text-red-500 text-sm">Almost Sold Out</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* View More Button */}
-          <div className="flex justify-center">
-            <Link href="/products" className="group px-10 py-3 bg-linear-to-r from-[#3d2c29] to-[#2d1f1c] text-white rounded-full font-medium hover:from-[#2d1f1c] hover:to-[#3d2c29] transition-all duration-300 shadow-2xl hover:shadow-[#3d2c29]/50 hover:scale-105">
-              View More<span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">→</span>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <NewArrivals />
 
       {/* Featured Product Highlight - Peaky Blinders */}
       <section className="relative px-4 md:px-8 py-0 mx-4 md:mx-12 lg:mx-24 rounded-3xl shadow-2xl mt-8 md:mt-12 overflow-hidden">
@@ -546,25 +408,7 @@ export default function LandingPage() {
             <p className="text-sm sm:text-base md:text-lg text-[#3d2c29]/70 mb-4 md:mb-6 text-center md:text-left max-w-md">
               Subscribe to receive exclusive offers, early access to new collections, and insider fashion tips delivered to your inbox.
             </p>
-            <form className="w-full max-w-lg">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email address" 
-                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl bg-white/80 backdrop-blur-md border border-white/50 focus:outline-none focus:ring-2 focus:ring-[#b88e72] focus:border-transparent shadow-lg placeholder:text-gray-400 transition-all duration-300 hover:bg-white text-sm sm:text-base" 
-                />
-                <button 
-                  type="submit" 
-                  className="group px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white rounded-2xl shadow-2xl hover:shadow-[#b88e72]/50 transition-all duration-300 hover:scale-105 font-semibold hover:from-[#8b6d5a] hover:to-[#b88e72] whitespace-nowrap text-sm sm:text-base"
-                >
-                  Subscribe Now
-                  <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">→</span>
-                </button>
-              </div>
-              <p className="text-xs text-[#3d2c29]/60 mt-3 text-center sm:text-left">
-                🔒 We respect your privacy. Unsubscribe at any time.
-              </p>
-            </form>
+            <NewsletterForm />
           </div>
           <div className="flex-1 flex justify-center gap-3 sm:gap-4">
             <div className="relative group overflow-hidden rounded-2xl">
