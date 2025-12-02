@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '@/hooks/useAuth';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -255,8 +256,23 @@ export default function RegisterPage() {
             </button>
           </form>
 
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white text-gray-500">Or continue with</span>
+            </div>
+          </div>
+
+          {/* Google Sign-In */}
+          <GoogleSignInButton
+            onError={(error) => setError(error)}
+          />
+
           {/* Login Link */}
-          <div className="text-center pt-4 border-t border-gray-200">
+          <div className="text-center pt-4 border-t border-gray-200 mt-6">
             <p className="text-sm text-[#3d2c29]">
               Already have an account?{' '}
               <Link href="/login" className="font-medium text-[#b88e72] hover:text-[#8b6d5a] transition-colors">
