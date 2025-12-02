@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,7 +8,7 @@ import { faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-s
 import { useAuth } from '@/hooks/useAuth';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login, isAuthenticated, isLoading: authLoading } = useAuth();
@@ -195,5 +195,19 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1]">
+          <div className="w-16 h-16 border-4 border-[#b88e72] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
   );
 }

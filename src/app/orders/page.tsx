@@ -30,7 +30,7 @@ interface Order {
   order_items: OrderItem[];
 }
 
-function OrdersContent() {
+function OrdersContentInner() {
   const searchParams = useSearchParams();
   const { token } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -356,7 +356,18 @@ export default function OrdersPage() {
       }
     >
       <ProtectedRoute>
-        <OrdersContent />
+        <Suspense
+          fallback={
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
+              <div className="text-center">
+                <div className="w-16 h-16 border-4 border-[#b88e72] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-[#3d2c29] text-lg">Loading orders...</p>
+              </div>
+            </div>
+          }
+        >
+          <OrdersContentInner />
+        </Suspense>
       </ProtectedRoute>
     </Suspense>
   );

@@ -23,7 +23,7 @@ interface PaymentFormData {
   paypalEmail?: string;
 }
 
-function PaymentContent() {
+function PaymentContentInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { token } = useAuth();
@@ -392,7 +392,16 @@ function PaymentPage() {
       </div>
     }>
       <ProtectedRoute>
-        <PaymentContent />
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
+            <div className="text-center">
+              <div className="w-16 h-16 border-4 border-[#b88e72] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-[#3d2c29] text-lg">Loading payment...</p>
+            </div>
+          </div>
+        }>
+          <PaymentContentInner />
+        </Suspense>
       </ProtectedRoute>
     </Suspense>
   );
