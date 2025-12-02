@@ -20,7 +20,7 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
     persist(
-        (set, get) => ({
+        (set) => ({
             user: null,
             token: null,
             isAuthenticated: false,
@@ -38,7 +38,6 @@ export const useAuthStore = create<AuthState>()(
             },
 
             logout: () => {
-                authApi.logout();
                 set({ token: null, user: null, isAuthenticated: false });
                 if (typeof window !== 'undefined') {
                     localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
@@ -57,7 +56,7 @@ export const useAuthStore = create<AuthState>()(
                     } else {
                         set({ isLoading: false });
                     }
-                } catch (error) {
+                } catch {
                     set({ token: null, user: null, isAuthenticated: false, isLoading: false });
                     if (typeof window !== 'undefined') {
                         localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
