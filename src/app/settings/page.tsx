@@ -380,20 +380,16 @@ function SettingsContent() {
                           {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
                         </p>
                       </div>
-                      <label htmlFor="showPurchaseHistory" className="relative inline-flex items-center cursor-pointer">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={value}
-                            onChange={() =>
-                              setNotifications({ ...notifications, [key]: !value })
-                            }
-                            className="sr-only peer"
-                            title={`Toggle ${key.replace(/([A-Z])/g, ' $1').toLowerCase()} notifications`}
-                            placeholder={`Toggle ${key.replace(/([A-Z])/g, ' $1').toLowerCase()} notifications`}
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#b88e72]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#b88e72]"></div>
-                        </label>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={value}
+                          onChange={() =>
+                            setNotifications({ ...notifications, [key]: !value })
+                          }
+                          className="sr-only peer"
+                          title={`Toggle ${key.replace(/([A-Z])/g, ' $1').toLowerCase()} notifications`}
+                        />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#b88e72]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#b88e72]"></div>
                       </label>
                     </div>
@@ -442,24 +438,20 @@ function SettingsContent() {
                         Allow others to see your purchase history
                       </p>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <label htmlFor="showPurchaseHistory" className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={privacy.showPurchaseHistory}
-                          onChange={() =>
-                            setPrivacy({
-                              ...privacy,
-                              showPurchaseHistory: !privacy.showPurchaseHistory,
-                            })
-                          }
-                          className="sr-only peer"
-                          title="Show Purchase History"
-                          placeholder="Show Purchase History"
-                          id="showPurchaseHistory"
-                        />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#b88e72]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#b88e72]"></div>
-                      </label>
+                    <label htmlFor="showPurchaseHistory" className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={privacy.showPurchaseHistory}
+                        onChange={() =>
+                          setPrivacy({
+                            ...privacy,
+                            showPurchaseHistory: !privacy.showPurchaseHistory,
+                          })
+                        }
+                        className="sr-only peer"
+                        title="Show Purchase History"
+                        id="showPurchaseHistory"
+                      />
                       <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#b88e72]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#b88e72]"></div>
                     </label>
                   </div>
@@ -471,20 +463,17 @@ function SettingsContent() {
                         Help us improve by sharing usage data
                       </p>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <label htmlFor="dataCollection" className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          id="dataCollection"
-                          type="checkbox"
-                          checked={privacy.dataCollection}
-                          onChange={() =>
-                            setPrivacy({ ...privacy, dataCollection: !privacy.dataCollection })
-                          }
-                          className="sr-only peer"
-                          title="Data Collection"
-                          placeholder="Enable Data Collection"
-                        />
-                      </label>
+                    <label htmlFor="dataCollection" className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        id="dataCollection"
+                        type="checkbox"
+                        checked={privacy.dataCollection}
+                        onChange={() =>
+                          setPrivacy({ ...privacy, dataCollection: !privacy.dataCollection })
+                        }
+                        className="sr-only peer"
+                        title="Data Collection"
+                      />
                       <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#b88e72]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#b88e72]"></div>
                     </label>
                   </div>
