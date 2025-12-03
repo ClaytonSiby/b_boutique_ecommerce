@@ -71,7 +71,7 @@ export default function NewProductPage() {
         sale_price: formData.sale_price ? parseFloat(formData.sale_price) : null,
       };
 
-      await api.post('/products', payload);
+      await api.post('/api/v1/products', payload);
       router.push('/admin/products');
     } catch (error) {
       console.error('Failed to create product:', error);

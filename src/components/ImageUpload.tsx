@@ -6,6 +6,8 @@ import { faUpload, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import Image from 'next/image';
 import {api} from '@/lib/api';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 interface ImageUploadProps {
   value?: string[];
   onChange: (urls: string[]) => void;
@@ -81,7 +83,11 @@ export default function ImageUpload({
         }
       );
 
-      const newUrls = response.data.map((img) => img.url);
+      // Convert relative URLs to absolute URLs
+      const newUrls = response.data.map((img) => {
+        const url = img.url.startsWith('http') ? img.url : `${API_URL}${img.url}`;
+        return url;
+      });
       onChange([...value, ...newUrls]);
     } catch (err: unknown) {
       const error = err as { response?: { data?: { detail?: string } } };
@@ -200,6 +206,7 @@ export default function ImageUpload({
                   width={300}
                   height={300}
                   className="w-full h-full object-cover"
+                  unoptimized
                 />
               </div>
               <button
