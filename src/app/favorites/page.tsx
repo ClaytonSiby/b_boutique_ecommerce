@@ -26,10 +26,6 @@ function FavoritesContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchFavorites();
-  }, [token]);
-
   const fetchFavorites = async () => {
     if (!token) return;
 
@@ -54,6 +50,11 @@ function FavoritesContent() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchFavorites();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const removeFromFavorites = async (productId: string) => {
     if (!token) return;
@@ -86,8 +87,7 @@ function FavoritesContent() {
 
     try {
       const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${API_BASE}/api/v1/cart/items`, {0';
-      const response = await fetch(`${API_BASE}/api/v1/favorites`, {
+      const response = await fetch(`${API_BASE}/api/v1/cart/items`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -118,7 +118,7 @@ function FavoritesContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#b88e72] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-[#3d2c29] text-lg">Loading favorites...</p>
@@ -128,7 +128,7 @@ function FavoritesContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Page Header */}
         <div className="text-center mb-12">
@@ -263,7 +263,7 @@ export default function FavoritesPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
+        <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-[#b88e72] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-[#3d2c29] text-lg">Loading...</p>
