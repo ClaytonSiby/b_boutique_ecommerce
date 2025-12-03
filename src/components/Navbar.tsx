@@ -12,7 +12,9 @@ export default function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
   const { cartItemsCount } = useCart();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileRef = useRef<HTMLDivElement>(null);
   
   const isActive = (path: string) => {
     if (path === '/') {
@@ -26,6 +28,9 @@ export default function Navbar() {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowProfileDropdown(false);
+      }
+      if (mobileRef.current && !mobileRef.current.contains(event.target as Node)) {
+        setMobileMenuOpen(false);
       }
     };
 
@@ -106,6 +111,16 @@ export default function Navbar() {
                   </div>
 
                   {/* Menu Items */}
+                  {user.is_admin && (
+                    <Link
+                      href="/admin"
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-[#3d2c29] hover:bg-[#f7e6e1]/50 transition-colors"
+                      onClick={() => setShowProfileDropdown(false)}
+                    >
+                      <svg className="w-4 h-4 text-[#b88e72]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H13V3.055z"/></svg>
+                      <span>Dashboard</span>
+                    </Link>
+                  )}
                   <Link
                     href="/profile"
                     className="flex items-center gap-3 px-4 py-2 text-sm text-[#3d2c29] hover:bg-[#f7e6e1]/50 transition-colors"
@@ -178,11 +193,41 @@ export default function Navbar() {
           <button
             className="md:hidden w-10 h-10 flex items-center justify-center text-[#3d2c29] hover:text-[#b88e72] transition-all hover:bg-[#f7e6e1]/50 rounded-full"
             title="Open mobile menu"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
         </div>
       </div>
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div ref={mobileRef} className="md:hidden bg-white border-t border-gray-200 shadow-xl">
+          <div className="px-6 py-4 space-y-2">
+            <Link href="/" className={`block px-2 py-2 ${isActive('/') ? 'text-[#b88e72]' : 'text-[#3d2c29]'}`} onClick={() => setMobileMenuOpen(false)}>Home</Link>
+            <Link href="/products" className={`block px-2 py-2 ${isActive('/products') ? 'text-[#b88e72]' : 'text-[#3d2c29]'}`} onClick={() => setMobileMenuOpen(false)}>Shop</Link>
+            <Link href="/about" className={`block px-2 py-2 ${isActive('/about') ? 'text-[#b88e72]' : 'text-[#3d2c29]'}`} onClick={() => setMobileMenuOpen(false)}>About</Link>
+            <Link href="/blog" className={`block px-2 py-2 ${isActive('/blog') ? 'text-[#b88e72]' : 'text-[#3d2c29]'}`} onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+            <Link href="/contact" className={`block px-2 py-2 ${isActive('/contact') ? 'text-[#b88e72]' : 'text-[#3d2c29]'}`} onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+            <div className="border-t border-gray-200 my-2" />
+            {isAuthenticated && user ? (
+              <div className="space-y-2">
+                {user.is_admin && (
+                  <Link href="/admin" className="block px-2 py-2 text-[#3d2c29]" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
+                )}
+                <Link href="/profile" className="block px-2 py-2 text-[#3d2c29]" onClick={() => setMobileMenuOpen(false)}>My Profile</Link>
+                <Link href="/orders" className="block px-2 py-2 text-[#3d2c29]" onClick={() => setMobileMenuOpen(false)}>My Orders</Link>
+                <Link href="/settings" className="block px-2 py-2 text-[#3d2c29]" onClick={() => setMobileMenuOpen(false)}>Settings</Link>
+                <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="block w-full text-left px-2 py-2 text-red-600">Sign Out</button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Link href="/login" className="block px-2 py-2 text-[#3d2c29]" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                <Link href="/register" className="block px-2 py-2 text-[#3d2c29]" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
