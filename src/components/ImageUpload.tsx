@@ -72,7 +72,7 @@ export default function ImageUpload({
       });
 
       const response = await api.post<UploadedImage[]>(
-        '/uploads/upload-multiple',
+        '/api/v1/uploads/upload-multiple',
         formData,
         {
           headers: {
@@ -116,7 +116,7 @@ export default function ImageUpload({
     try {
       const filename = urlToDelete.split('/').pop();
       if (filename) {
-        await api.delete(`/uploads/delete/${filename}`);
+        await api.delete(`/api/v1/uploads/delete/${filename}`);
       }
       onChange(value.filter((url) => url !== urlToDelete));
     } catch (err: unknown) {
