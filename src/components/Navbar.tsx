@@ -220,9 +220,21 @@ export default function Navbar() {
                 <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="block w-full text-left px-2 py-2 text-red-600">Sign Out</button>
               </div>
             ) : (
-              <div className="space-y-2">
-                <Link href="/login" className="block px-2 py-2 text-[#3d2c29]" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
-                <Link href="/register" className="block px-2 py-2 text-[#3d2c29]" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
+              <div className="space-y-3">
+                <Link
+                  href="/login"
+                  className="block w-full text-center px-4 py-3 text-sm font-medium text-[#3d2c29] bg-[#f7e6e1]/60 hover:bg-[#f7e6e1] rounded-full transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  className="block w-full text-center px-4 py-3 text-sm font-medium text-white bg-linear-to-r from-[#b88e72] to-[#8b6d5a] hover:from-[#8b6d5a] hover:to-[#b88e72] rounded-full transition-colors shadow-md"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sign Up
+                </Link>
               </div>
             )}
           </div>
