@@ -10,8 +10,17 @@ export default function GoogleSignInButton({ onError }: GoogleSignInButtonProps)
   const handleGoogleSignIn = () => {
     try {
       // Redirect to backend Google OAuth endpoint
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || 'http://localhost:8000';
-      window.location.href = `${backendUrl}/api/v1/auth/google/login`;
+      const raw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      // Normalize to origin (strip any path like /api)
+      let origin = raw;
+      try {
+        const u = new URL(raw);
+        origin = `${u.protocol}//${u.host}`;
+      } catch {
+        // fallback: if raw contains "/api", strip it
+        origin = raw.replace(/\/?api$/i, '');
+      }
+      window.location.href = `${origin}/api/v1/auth/google/login`;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to initiate Google sign-in';
       if (onError) {

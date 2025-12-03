@@ -173,7 +173,7 @@ export default function Navbar() {
               )}
             </div>
           ) : (
-            <div className="flex gap-2">
+            <div className="hidden md:flex gap-2">
               <Link
                 href="/login"
                 className="px-4 py-2 text-sm font-medium text-[#3d2c29] hover:text-[#b88e72] transition-colors"
@@ -201,8 +201,18 @@ export default function Navbar() {
       </div>
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div ref={mobileRef} className="md:hidden bg-white border-t border-gray-200 shadow-xl">
-          <div className="px-6 py-4 space-y-2">
+        <div className="md:hidden fixed inset-0 z-60">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/30" onClick={() => setMobileMenuOpen(false)} aria-hidden="true" />
+          {/* Panel */}
+          <div ref={mobileRef} className="absolute right-0 top-0 h-full w-11/12 max-w-sm bg-white shadow-2xl border-l border-gray-200 flex flex-col">
+            <div className="px-6 py-5 flex items-center justify-between border-b border-gray-200">
+              <span className="text-lg font-semibold text-[#3d2c29]">Menu</span>
+              <button onClick={() => setMobileMenuOpen(false)} aria-label="Close menu" className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#f7e6e1]/60">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <div className="px-6 py-4 overflow-y-auto flex-1 space-y-2">
             <Link href="/" className={`block px-2 py-2 ${isActive('/') ? 'text-[#b88e72]' : 'text-[#3d2c29]'}`} onClick={() => setMobileMenuOpen(false)}>Home</Link>
             <Link href="/products" className={`block px-2 py-2 ${isActive('/products') ? 'text-[#b88e72]' : 'text-[#3d2c29]'}`} onClick={() => setMobileMenuOpen(false)}>Shop</Link>
             <Link href="/about" className={`block px-2 py-2 ${isActive('/about') ? 'text-[#b88e72]' : 'text-[#3d2c29]'}`} onClick={() => setMobileMenuOpen(false)}>About</Link>
@@ -237,6 +247,7 @@ export default function Navbar() {
                 </Link>
               </div>
             )}
+            </div>
           </div>
         </div>
       )}
