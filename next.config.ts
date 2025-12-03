@@ -7,6 +7,23 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '8000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'benedettoboutique.com',
+        pathname: '/**',
+      },
+      {
         protocol: 'https',
         hostname: 'sneakerbardetroit.com',
         pathname: '/wp-content/uploads/**',
@@ -16,6 +33,9 @@ const nextConfig: NextConfig = {
         hostname: '**',
       },
     ],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 };
 
