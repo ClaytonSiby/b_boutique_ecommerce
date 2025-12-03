@@ -11,6 +11,7 @@ import {
   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import { api } from '@/lib/api';
+import { useToastStore } from '@/lib/store/toast';
 
 interface User {
   id: string;
@@ -22,6 +23,7 @@ interface User {
 }
 
 export default function UsersAdmin() {
+  const toast = useToastStore();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,6 +39,7 @@ export default function UsersAdmin() {
       setUsers(response.data || []);
     } catch (error) {
       console.error('Failed to fetch users:', error);
+      toast.error('Failed to load users', 'Error');
     } finally {
       setLoading(false);
     }
@@ -53,9 +56,13 @@ export default function UsersAdmin() {
           u.id === userId ? { ...u, is_active: !currentStatus } : u
         )
       );
+      toast.success(
+        `User ${!currentStatus ? 'activated' : 'deactivated'} successfully`,
+        'Success'
+      );
     } catch (error) {
       console.error('Failed to update user:', error);
-      alert('Failed to update user status');
+      toast.error('Failed to update user status', 'Error');
     } finally {
       setUpdating(null);
     }

@@ -7,11 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '@/hooks/useAuth';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
+import { useToastStore } from '@/lib/store/toast';
 
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login, isAuthenticated, isLoading: authLoading } = useAuth();
+  const toast = useToastStore();
   
   const [formData, setFormData] = useState({
     username: '',
@@ -37,9 +39,12 @@ function LoginContent() {
 
     try {
       await login(formData.username, formData.password);
+      toast.success('Successfully logged in!', 'Welcome back');
       router.push(returnUrl);
     } catch (err) {
-      setError((err as Error).message || 'Invalid credentials. Please try again.');
+      const errorMessage = (err as Error).message || 'Invalid credentials. Please try again.';
+      setError(errorMessage);
+      toast.error(errorMessage, 'Login Failed');
     } finally {
       setIsLoading(false);
     }

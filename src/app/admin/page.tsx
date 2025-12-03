@@ -82,9 +82,9 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-2 text-gray-600">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">
           Welcome back! Here&apos;s an overview of your store.
         </p>
       </div>
@@ -132,33 +132,33 @@ export default function AdminDashboard() {
       )}
 
       {/* Quick Actions */}
-      <div className="mt-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="mt-6 sm:mt-8">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <a
             href="/admin/products/new"
-            className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow border-2 border-transparent hover:border-[#b88e72]"
+            className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border-2 border-transparent hover:border-[#b88e72]"
           >
-            <h3 className="font-semibold text-gray-900">Add New Product</h3>
-            <p className="mt-1 text-sm text-gray-600">
+            <h3 className="font-semibold text-sm sm:text-base text-gray-900">Add New Product</h3>
+            <p className="mt-1 text-xs sm:text-sm text-gray-600">
               Create a new product listing
             </p>
           </a>
           <a
             href="/admin/orders"
-            className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow border-2 border-transparent hover:border-[#b88e72]"
+            className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border-2 border-transparent hover:border-[#b88e72]"
           >
-            <h3 className="font-semibold text-gray-900">View Orders</h3>
-            <p className="mt-1 text-sm text-gray-600">
+            <h3 className="font-semibold text-sm sm:text-base text-gray-900">View Orders</h3>
+            <p className="mt-1 text-xs sm:text-sm text-gray-600">
               Manage customer orders
             </p>
           </a>
           <a
             href="/admin/categories"
-            className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow border-2 border-transparent hover:border-[#b88e72]"
+            className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border-2 border-transparent hover:border-[#b88e72]"
           >
-            <h3 className="font-semibold text-gray-900">Manage Categories</h3>
-            <p className="mt-1 text-sm text-gray-600">
+            <h3 className="font-semibold text-sm sm:text-base text-gray-900">Manage Categories</h3>
+            <p className="mt-1 text-xs sm:text-sm text-gray-600">
               Organize product categories
             </p>
           </a>

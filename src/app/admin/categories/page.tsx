@@ -12,6 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { api } from '@/lib/api';
 import axios from 'axios';
+import { useToastStore } from '@/lib/store/toast';
 
 interface Category {
   id: string;
@@ -24,6 +25,7 @@ interface Category {
 }
 
 export default function CategoriesAdmin() {
+  const toast = useToastStore();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<string | null>(null);
@@ -44,6 +46,7 @@ export default function CategoriesAdmin() {
       setCategories(response.data || []);
     } catch (error) {
       console.error('Failed to fetch categories:', error);
+      toast.error('Failed to load categories', 'Error');
     } finally {
       setLoading(false);
     }
@@ -68,8 +71,10 @@ export default function CategoriesAdmin() {
 
       if (editing) {
         await api.patch(`/api/v1/categories/${editing}`, payload);
+        toast.success('Category updated successfully', 'Success');
       } else {
         await api.post('/api/v1/categories', payload);
+        toast.success('Category created successfully', 'Success');
       }
       setFormData({ name: '', description: '' });
       setEditing(null);
@@ -85,7 +90,7 @@ export default function CategoriesAdmin() {
         errorMessage = error.message;
       }
       
-      alert(`Failed to save category: ${errorMessage}`);
+      toast.error(errorMessage, editing ? 'Update Failed' : 'Creation Failed');
     }
   };
 
@@ -105,9 +110,10 @@ export default function CategoriesAdmin() {
     try {
       await api.delete(`/api/v1/categories/${id}`);
       setCategories(categories.filter((c) => c.id !== id));
+      toast.success('Category deleted successfully', 'Success');
     } catch (error) {
       console.error('Failed to delete category:', error);
-      alert('Failed to delete category');
+      toast.error('Failed to delete category', 'Error');
     } finally {
       setDeleting(null);
     }
@@ -121,17 +127,17 @@ export default function CategoriesAdmin() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Categories</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Categories</h1>
+          <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">
             Organize your products into categories
           </p>
         </div>
         {!showAddForm && (
           <button
             onClick={() => setShowAddForm(true)}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white font-medium rounded-lg hover:shadow-lg transition-shadow"
+            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white text-sm sm:text-base font-medium rounded-lg hover:shadow-lg transition-shadow whitespace-nowrap"
           >
             <FontAwesomeIcon icon={faPlus} className="w-4 h-4" />
             Add Category
@@ -141,13 +147,13 @@ export default function CategoriesAdmin() {
 
       {/* Add/Edit Form */}
       {showAddForm && (
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
             {editing ? 'Edit Category' : 'Add New Category'}
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Category Name *
               </label>
               <input
@@ -155,36 +161,36 @@ export default function CategoriesAdmin() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent"
                 placeholder="e.g., Women's Clothing"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Description
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent"
                 placeholder="Category description..."
               />
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 px-6 py-2 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white font-medium rounded-lg hover:shadow-lg transition-shadow"
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white text-sm sm:text-base font-medium rounded-lg hover:shadow-lg transition-shadow"
               >
-                <FontAwesomeIcon icon={faSave} className="w-4 h-4" />
+                <FontAwesomeIcon icon={faSave} className="w-3 h-3 sm:w-4 sm:h-4" />
                 {editing ? 'Update' : 'Create'}
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="inline-flex items-center gap-2 px-6 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2 bg-gray-200 text-gray-700 text-sm sm:text-base font-medium rounded-lg hover:bg-gray-300 transition-colors"
               >
-                <FontAwesomeIcon icon={faTimes} className="w-4 h-4" />
+                <FontAwesomeIcon icon={faTimes} className="w-3 h-3 sm:w-4 sm:h-4" />
                 Cancel
               </button>
             </div>
@@ -200,21 +206,21 @@ export default function CategoriesAdmin() {
           />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {categories.length === 0 ? (
-            <div className="col-span-full text-center py-12 text-gray-500">
+            <div className="col-span-full text-center py-12 text-gray-500 text-sm">
               No categories found
             </div>
           ) : (
             categories.map((category) => (
               <div
                 key={category.id}
-                className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
+                className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow"
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-gray-900">{category.name}</h3>
-                    <p className="text-sm text-gray-500 mt-1">{category.slug}</p>
+                <div className="flex items-start justify-between mb-2 sm:mb-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-900 truncate">{category.name}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1 truncate">{category.slug}</p>
                   </div>
                   <span
                     className={`px-2 py-1 text-xs font-semibold rounded-full ${

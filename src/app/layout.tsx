@@ -5,6 +5,7 @@ import "@/lib/fontawesome";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
+import ToastContainer from "@/components/Toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
             <LayoutWrapper>
               {children}
             </LayoutWrapper>
+            <ToastContainer />
           </CartProvider>
         </AuthProvider>
       </body>

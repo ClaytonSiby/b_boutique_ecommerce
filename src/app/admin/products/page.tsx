@@ -13,6 +13,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { api } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils/currency';
+import { useToastStore } from '@/lib/store/toast';
+import { getFirstImageUrl } from '@/lib/utils/image';
 
 interface Product {
   id: string;
@@ -30,6 +32,7 @@ interface Product {
 }
 
 export default function ProductsAdmin() {
+  const toast = useToastStore();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -45,6 +48,7 @@ export default function ProductsAdmin() {
       setProducts(response.data || []);
     } catch (error) {
       console.error('Failed to fetch products:', error);
+      toast.error('Failed to load products', 'Error');
     } finally {
       setLoading(false);
     }
@@ -57,9 +61,10 @@ export default function ProductsAdmin() {
     try {
       await api.delete(`/api/v1/products/${id}`);
       setProducts(products.filter((p) => p.id !== id));
+      toast.success('Product deleted successfully', 'Success');
     } catch (error) {
       console.error('Failed to delete product:', error);
-      alert('Failed to delete product');
+      toast.error('Failed to delete product', 'Error');
     } finally {
       setDeleting(null);
     }
@@ -72,16 +77,16 @@ export default function ProductsAdmin() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Products</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Products</h1>
+          <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">
             Manage your product inventory
           </p>
         </div>
         <Link
           href="/admin/products/new"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white font-medium rounded-lg hover:shadow-lg transition-shadow"
+          className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-linear-to-r from-[#b88e72] to-[#8b6d5a] text-white text-sm sm:text-base font-medium rounded-lg hover:shadow-lg transition-shadow whitespace-nowrap"
         >
           <FontAwesomeIcon icon={faPlus} className="w-4 h-4" />
           Add Product
@@ -89,18 +94,18 @@ export default function ProductsAdmin() {
       </div>
 
       {/* Search Bar */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <div className="relative">
           <FontAwesomeIcon
             icon={faSearch}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+            className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5"
           />
           <input
             type="text"
-            placeholder="Search products by name or SKU..."
+            placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent"
+            className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent"
           />
         </div>
       </div>
@@ -114,25 +119,104 @@ export default function ProductsAdmin() {
         </div>
       ) : (
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
+          {/* Mobile Card View */}
+          <div className="block lg:hidden divide-y divide-gray-200">
+            {filteredProducts.length === 0 ? (
+              <div className="px-4 py-12 text-center text-gray-500 text-sm">
+                No products found
+              </div>
+            ) : (
+              filteredProducts.map((product) => (
+                <div key={product.id} className="p-4 hover:bg-gray-50">
+                  <div className="flex items-start gap-3 mb-3">
+                    {product.images && product.images[0] ? (
+                      <Image
+                        src={getFirstImageUrl(product.images)}
+                        alt={product.name}
+                        width={64}
+                        height={64}
+                        className="w-16 h-16 rounded-lg object-cover shrink-0"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-lg bg-gray-200 flex items-center justify-center shrink-0">
+                        <span className="text-gray-400 text-xs">No image</span>
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-gray-900 text-sm truncate">{product.name}</div>
+                      <div className="text-xs text-gray-500 truncate mt-0.5">{product.sku}</div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-sm font-medium text-gray-900">
+                          {formatCurrency(product.sale_price || product.price)}
+                        </span>
+                        {product.sale_price && (
+                          <span className="text-xs text-gray-500 line-through">
+                            {formatCurrency(product.price)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-500">{product.category?.name || 'N/A'}</span>
+                    <span
+                      className={`px-2 py-0.5 font-semibold rounded-full ${
+                        product.is_active
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}
+                    >
+                      {product.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+                    <Link
+                      href={`/admin/products/${product.id}`}
+                      className="flex-1 text-center text-[#b88e72] hover:text-[#8b6d5a] py-2 px-3 border border-[#b88e72] rounded-lg text-sm font-medium"
+                    >
+                      <FontAwesomeIcon icon={faEdit} className="w-3 h-3 mr-1" />
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(product.id)}
+                      disabled={deleting === product.id}
+                      className="flex-1 text-center text-red-600 hover:text-red-800 py-2 px-3 border border-red-600 rounded-lg text-sm font-medium disabled:opacity-50"
+                    >
+                      {deleting === product.id ? (
+                        <FontAwesomeIcon icon={faSpinner} className="w-3 h-3 animate-spin" />
+                      ) : (
+                        <>
+                          <FontAwesomeIcon icon={faTrash} className="w-3 h-3 mr-1" />
+                          Delete
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          {/* Desktop Table View */}
+          <table className="hidden lg:table min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
                   Product
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
                   SKU
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-28">
                   Price
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
                   Category
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">
                   Status
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-24">
                   Actions
                 </th>
               </tr>
@@ -151,11 +235,12 @@ export default function ProductsAdmin() {
                       <div className="flex items-center gap-3">
                         {product.images && product.images[0] ? (
                           <Image
-                            src={product.images[0]}
+                            src={getFirstImageUrl(product.images)}
                             alt={product.name}
                             width={48}
                             height={48}
                             className="w-12 h-12 rounded-lg object-cover"
+                            unoptimized
                           />
                         ) : (
                           <div className="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center">
@@ -168,7 +253,7 @@ export default function ProductsAdmin() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-32 truncate" title={product.sku}>
                       {product.sku}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

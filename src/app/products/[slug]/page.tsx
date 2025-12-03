@@ -20,7 +20,9 @@ import {
 import { faHeart as faHeartOutline } from '@fortawesome/free-regular-svg-icons';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
-import { API_URL, API_BASE_URL } from '@/lib/constants';
+import { getImageUrl } from '@/lib/utils/image';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 interface Product {
   id: string;
@@ -37,12 +39,6 @@ interface Product {
   updated_at: string;
 }
 
-function getImageUrl(imagePath: string) {
-  if (imagePath.startsWith('http')) {
-    return imagePath;
-  }
-  return `${API_BASE_URL}/${imagePath.replace(/^\/+/, '')}`;
-}
 
 export default function ProductDetailPage() {
   const params = useParams();

@@ -7,10 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '@/hooks/useAuth';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
+import { useToastStore } from '@/lib/store/toast';
 
 export default function RegisterPage() {
   const router = useRouter();
   const { register, isAuthenticated, isLoading: authLoading } = useAuth();
+  const toast = useToastStore();
   
   const [formData, setFormData] = useState({
     username: '',
@@ -59,6 +61,7 @@ export default function RegisterPage() {
     setError('');
     
     if (!validateForm()) {
+      toast.error('Please fix the form errors', 'Validation Failed');
       return;
     }
 
@@ -66,9 +69,12 @@ export default function RegisterPage() {
 
     try {
       await register(formData.username, formData.email, formData.password);
+      toast.success('Your account has been created successfully!', 'Welcome!');
       router.push('/');
     } catch (err) {
-      setError((err as Error).message || 'Registration failed. Please try again.');
+      const errorMessage = (err as Error).message || 'Registration failed. Please try again.';
+      setError(errorMessage);
+      toast.error(errorMessage, 'Registration Failed');
     } finally {
       setIsLoading(false);
     }

@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { api } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils/currency';
+import { useToastStore } from '@/lib/store/toast';
 
 interface Order {
   id: string;
@@ -31,6 +32,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function OrdersAdmin() {
+  const toast = useToastStore();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -46,6 +48,7 @@ export default function OrdersAdmin() {
       setOrders(response.data || []);
     } catch (error) {
       console.error('Failed to fetch orders:', error);
+      toast.error('Failed to load orders', 'Error');
     } finally {
       setLoading(false);
     }
@@ -61,37 +64,37 @@ export default function OrdersAdmin() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Orders</h1>
-        <p className="mt-2 text-gray-600">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Orders</h1>
+        <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">
           Manage and track customer orders
         </p>
       </div>
 
       {/* Filters */}
-      <div className="mb-6 flex flex-col md:flex-row gap-4">
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
         <div className="flex-1 relative">
           <FontAwesomeIcon
             icon={faSearch}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+            className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5"
           />
           <input
             type="text"
-            placeholder="Search by order number or email..."
+            placeholder="Search orders..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent"
+            className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent"
           />
         </div>
         <div className="relative">
           <FontAwesomeIcon
             icon={faFilter}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+            className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5"
           />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="pl-12 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent appearance-none bg-white cursor-pointer min-w-[200px]"
+            className="w-full sm:w-auto pl-10 sm:pl-12 pr-8 sm:pr-10 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent appearance-none bg-white cursor-pointer sm:min-w-[200px]"
             aria-label="Filter orders by status"
             title="Filter orders by status"
           >
@@ -114,7 +117,55 @@ export default function OrdersAdmin() {
         </div>
       ) : (
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
+          {/* Mobile Card View */}
+          <div className="block lg:hidden divide-y divide-gray-200">
+            {filteredOrders.length === 0 ? (
+              <div className="px-4 py-12 text-center text-gray-500 text-sm">
+                No orders found
+              </div>
+            ) : (
+              filteredOrders.map((order) => (
+                <div key={order.id} className="p-4 hover:bg-gray-50">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-gray-900 text-sm truncate">
+                        {order.order_number}
+                      </div>
+                      <div className="text-xs text-gray-500 truncate mt-0.5">
+                        {order.user_email}
+                      </div>
+                    </div>
+                    <span
+                      className={`px-2 py-0.5 text-xs font-semibold rounded-full whitespace-nowrap ml-2 ${
+                        statusColors[order.status] || 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      {order.status}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between mt-3">
+                    <div>
+                      <div className="text-sm font-medium text-gray-900">
+                        {formatCurrency(order.total_amount)}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-0.5">
+                        {new Date(order.created_at).toLocaleDateString()}
+                      </div>
+                    </div>
+                    <Link
+                      href={`/admin/orders/${order.id}`}
+                      className="inline-flex items-center gap-1.5 text-[#b88e72] hover:text-[#8b6d5a] py-1.5 px-3 border border-[#b88e72] rounded-lg text-xs font-medium"
+                    >
+                      <FontAwesomeIcon icon={faEye} className="w-3 h-3" />
+                      View
+                    </Link>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          {/* Desktop Table View */}
+          <div className="hidden lg:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -185,9 +236,9 @@ export default function OrdersAdmin() {
                       </td>
                     </tr>
                   ))
-                )}
-              </tbody>
-            </table>
+              )}
+            </tbody>
+          </table>
           </div>
         </div>
       )}
