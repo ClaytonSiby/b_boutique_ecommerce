@@ -201,11 +201,11 @@ export default function Navbar() {
       </div>
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-60">
+        <div className="md:hidden fixed inset-0 z-[60]">
           {/* Backdrop */}
           <div className="absolute inset-0 bg-black/30" onClick={() => setMobileMenuOpen(false)} aria-hidden="true" />
           {/* Panel */}
-          <div ref={mobileRef} className="absolute right-0 top-0 h-full w-11/12 max-w-sm bg-white shadow-2xl border-l border-gray-200 flex flex-col">
+          <div ref={mobileRef} className="absolute right-0 top-0 h-screen w-11/12 max-w-sm bg-white shadow-2xl border-l border-gray-200 flex flex-col">
             <div className="px-6 py-5 flex items-center justify-between border-b border-gray-200">
               <span className="text-lg font-semibold text-[#3d2c29]">Menu</span>
               <button onClick={() => setMobileMenuOpen(false)} aria-label="Close menu" className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#f7e6e1]/60">
