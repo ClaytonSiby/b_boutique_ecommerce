@@ -9,6 +9,7 @@ import {
   faDollarSign,
 } from '@fortawesome/free-solid-svg-icons';
 import {api} from '@/lib/api';
+import { formatCurrency } from '@/lib/utils/currency';
 
 interface Stats {
   totalProducts: number;
@@ -72,8 +73,8 @@ export default function AdminDashboard() {
       color: 'from-purple-500 to-purple-600',
     },
     {
-      name: 'Total Revenue',
-      value: `$${stats.totalRevenue.toFixed(2)}`,
+      title: 'Total Revenue',
+      value: formatCurrency(stats.totalRevenue),
       icon: faDollarSign,
       color: 'from-amber-500 to-amber-600',
     },
@@ -117,7 +118,7 @@ export default function AdminDashboard() {
                   </p>
                 </div>
                 <div
-                  className={`w-14 h-14 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}
+                  className={`w-14 h-14 rounded-xl bg-linear-to-br ${stat.color} flex items-center justify-center`}
                 >
                   <FontAwesomeIcon
                     icon={stat.icon}

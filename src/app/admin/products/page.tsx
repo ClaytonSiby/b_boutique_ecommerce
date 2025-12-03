@@ -12,6 +12,7 @@ import {
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import { api } from '@/lib/api';
+import { formatCurrency } from '@/lib/utils/currency';
 
 interface Product {
   id: string;
@@ -172,11 +173,11 @@ export default function ProductsAdmin() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        ${product.sale_price || product.price}
+                        {formatCurrency(product.sale_price || product.price)}
                       </div>
                       {product.sale_price && (
                         <div className="text-xs text-gray-500 line-through">
-                          ${product.price}
+                          {formatCurrency(product.price)}
                         </div>
                       )}
                     </td>

@@ -28,7 +28,7 @@ export default function SettingsAdmin() {
     storeName: 'Benedetto Boutique',
     storeEmail: 'info@benedettoboutique.com',
     storePhone: '+1 (555) 123-4567',
-    currency: 'USD',
+    currency: 'ZAR',
     taxRate: 8.5,
     shippingFee: 9.99,
     freeShippingThreshold: 50,
@@ -144,6 +144,7 @@ export default function SettingsAdmin() {
                   }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b88e72] focus:border-transparent"
                 >
+                  <option value="ZAR">ZAR (R)</option>
                   <option value="USD">USD ($)</option>
                   <option value="EUR">EUR (€)</option>
                   <option value="GBP">GBP (£)</option>

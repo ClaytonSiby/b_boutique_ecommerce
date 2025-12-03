@@ -10,6 +10,7 @@ import {
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import { api } from '@/lib/api';
+import { formatCurrency } from '@/lib/utils/currency';
 
 interface AnalyticsData {
   totalRevenue: number;
@@ -54,7 +55,7 @@ export default function AnalyticsAdmin() {
   const metrics = [
     {
       name: 'Total Revenue',
-      value: `$${data.totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      value: formatCurrency(data.totalRevenue),
       growth: data.revenueGrowth,
       icon: faDollarSign,
       color: 'from-green-500 to-green-600',
@@ -75,7 +76,7 @@ export default function AnalyticsAdmin() {
     },
     {
       name: 'Avg Order Value',
-      value: `$${data.averageOrderValue.toFixed(2)}`,
+      value: formatCurrency(data.averageOrderValue),
       growth: 0,
       icon: faChartLine,
       color: 'from-amber-500 to-amber-600',

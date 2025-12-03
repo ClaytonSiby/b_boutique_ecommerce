@@ -11,6 +11,7 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { api } from '@/lib/api';
+import axios from 'axios';
 
 interface Category {
   id: string;
@@ -48,21 +49,43 @@ export default function CategoriesAdmin() {
     }
   };
 
+  const generateSlug = (name: string): string => {
+    return name
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const payload = {
+        ...formData,
+        slug: generateSlug(formData.name),
+      };
+
       if (editing) {
-        await api.put(`/api/v1/categories/${editing}`, formData);
+        await api.patch(`/api/v1/categories/${editing}`, payload);
       } else {
-        await api.post('/api/v1/categories', formData);
+        await api.post('/api/v1/categories', payload);
       }
       setFormData({ name: '', description: '' });
       setEditing(null);
       setShowAddForm(false);
       fetchCategories();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Failed to save category:', error);
-      alert('Failed to save category');
+      let errorMessage = 'Failed to save category';
+      
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.detail || error.message;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      
+      alert(`Failed to save category: ${errorMessage}`);
     }
   };
 

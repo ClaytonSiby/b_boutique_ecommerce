@@ -10,6 +10,7 @@ import {
   faFilter,
 } from '@fortawesome/free-solid-svg-icons';
 import { api } from '@/lib/api';
+import { formatCurrency } from '@/lib/utils/currency';
 
 interface Order {
   id: string;
@@ -157,7 +158,7 @@ export default function OrdersAdmin() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
-                          ${order.total_amount.toFixed(2)}
+                          {formatCurrency(order.total_amount)}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

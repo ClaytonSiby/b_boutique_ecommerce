@@ -56,8 +56,17 @@ export default function NewProductPage() {
     setLoading(true);
 
     try {
+      // Generate slug from product name
+      const slug = formData.name
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+
       const payload = {
         ...formData,
+        slug,
         price: parseFloat(formData.price),
         sale_price: formData.sale_price ? parseFloat(formData.sale_price) : null,
       };
@@ -173,7 +182,7 @@ export default function NewProductPage() {
               </label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">
-                  $
+                  R
                 </span>
                 <input
                   id="price"
@@ -195,7 +204,7 @@ export default function NewProductPage() {
               </label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">
-                  $
+                  R
                 </span>
                 <input
                   id="sale_price"
