@@ -42,8 +42,8 @@ export default function OrdersAdmin() {
 
   const fetchOrders = async () => {
     try {
-      const response = await api.get<{ orders: Order[] }>('/api/v1/orders');
-      setOrders(response.data.orders || []);
+      const response = await api.get<Order[]>('/api/v1/orders');
+      setOrders(response.data || []);
     } catch (error) {
       console.error('Failed to fetch orders:', error);
     } finally {

@@ -40,8 +40,8 @@ export default function CategoriesAdmin() {
 
   const fetchCategories = async () => {
     try {
-      const response = await api.get<{ categories: Category[] }>('/api/v1/categories');
-      setCategories(response.data.categories || []);
+      const response = await api.get<Category[]>('/api/v1/categories');
+      setCategories(response.data || []);
     } catch (error) {
       console.error('Failed to fetch categories:', error);
     } finally {

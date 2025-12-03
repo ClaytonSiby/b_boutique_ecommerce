@@ -33,8 +33,8 @@ export default function UsersAdmin() {
 
   const fetchUsers = async () => {
     try {
-      const response = await api.get<{ users: User[] }>('/api/v1/users');
-      setUsers(response.data.users || []);
+      const response = await api.get<User[]>('/api/v1/users');
+      setUsers(response.data || []);
     } catch (error) {
       console.error('Failed to fetch users:', error);
     } finally {

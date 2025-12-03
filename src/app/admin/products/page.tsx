@@ -41,8 +41,8 @@ export default function ProductsAdmin() {
 
   const fetchProducts = async () => {
     try {
-      const response = await api.get<{ products: Product[] }>('/products');
-      setProducts(response.data.products || []);
+      const response = await api.get<Product[]>('/api/v1/products');
+      setProducts(response.data || []);
     } catch (error) {
       console.error('Failed to fetch products:', error);
     } finally {
@@ -55,7 +55,7 @@ export default function ProductsAdmin() {
 
     setDeleting(id);
     try {
-      await api.delete(`/products/${id}`);
+      await api.delete(`/api/v1/products/${id}`);
       setProducts(products.filter((p) => p.id !== id));
     } catch (error) {
       console.error('Failed to delete product:', error);
