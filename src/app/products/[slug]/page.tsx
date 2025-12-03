@@ -37,6 +37,13 @@ interface Product {
   updated_at: string;
 }
 
+function getImageUrl(imagePath: string) {
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+  return `${API_BASE_URL}/${imagePath.replace(/^\/+/, '')}`;
+}
+
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -237,11 +244,12 @@ export default function ProductDetailPage() {
               <div className="relative aspect-square bg-gray-100 rounded-xl overflow-hidden">
                 {product.images && product.images.length > 0 ? (
                   <Image
-                    src={product.images[selectedImage]}
+                    src={getImageUrl(product.images[selectedImage])}
                     alt={product.name}
                     fill
                     className="object-cover"
                     priority
+                    unoptimized
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-400">
@@ -269,7 +277,7 @@ export default function ProductDetailPage() {
                       }`}
                       aria-label={`View image ${index + 1}`}
                     >
-                      <Image src={image} alt={`${product.name} ${index + 1}`} fill className="object-cover" />
+                      <Image src={getImageUrl(image)} alt={`${product.name} ${index + 1}`} fill className="object-cover" unoptimized />
                     </button>
                   ))}
                 </div>

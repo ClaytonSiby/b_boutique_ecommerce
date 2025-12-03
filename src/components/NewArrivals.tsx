@@ -3,6 +3,15 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// Helper to convert image URLs to absolute URLs
+const getImageUrl = (url: string | null): string => {
+  if (!url) return '/assets/images/placeholder.svg';
+  if (url.startsWith('http')) return url;
+  
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  return `${API_URL}${url}`;
+};
+
 interface Product {
   id: string;
   name: string;
@@ -75,7 +84,7 @@ export default function NewArrivals() {
 
   const getProductImage = (product: Product) => {
     if (product.images && product.images.length > 0 && product.images[0]) {
-      return product.images[0];
+      return getImageUrl(product.images[0]);
     }
     return '/assets/images/placeholder.svg';
   };
@@ -159,6 +168,7 @@ export default function NewArrivals() {
                       width={240}
                       height={240}
                       className="object-cover h-full w-full group-hover:scale-110 transition-transform duration-500"
+                      unoptimized
                     />
                     {product.stock_quantity < 10 && product.stock_quantity > 0 && (
                       <div className="absolute top-4 right-4 px-3 py-1 bg-red-500 text-white text-xs font-semibold rounded-full">

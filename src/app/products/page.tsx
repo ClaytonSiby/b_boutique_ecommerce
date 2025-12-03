@@ -9,6 +9,15 @@ import { faHeart as faHeartOutline } from '@fortawesome/free-regular-svg-icons';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 
+// Helper to convert image URLs to absolute URLs
+const getImageUrl = (url: string | null): string => {
+  if (!url) return '/assets/images/placeholder.jpg';
+  if (url.startsWith('http')) return url;
+  
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  return `${API_URL}${url}`;
+};
+
 interface Product {
   id: string;
   name: string;
@@ -549,7 +558,7 @@ function ProductCard({
   const hasDiscount = product.sale_price && product.sale_price < product.price;
   const displayPrice = product.sale_price || product.price;
   const productImage = product.images && product.images.length > 0 
-    ? product.images[0] 
+    ? getImageUrl(product.images[0])
     : '/assets/images/placeholder.jpg';
 
   const checkFavoriteStatus = React.useCallback(async () => {
@@ -660,6 +669,7 @@ function ProductCard({
               alt={product.name}
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-500"
+              unoptimized
             />
           </Link>
           {hasDiscount && (
@@ -731,6 +741,7 @@ function ProductCard({
             alt={product.name}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-500"
+            unoptimized
           />
         </Link>
         {hasDiscount && (

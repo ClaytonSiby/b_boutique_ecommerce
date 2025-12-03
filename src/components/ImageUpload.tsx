@@ -6,7 +6,13 @@ import { faUpload, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import Image from 'next/image';
 import {api} from '@/lib/api';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// Get API URL - fallback to localhost if not set
+const getApiUrl = () => {
+  if (typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  }
+  return 'http://localhost:8000';
+};
 
 interface ImageUploadProps {
   value?: string[];
@@ -85,7 +91,9 @@ export default function ImageUpload({
 
       // Convert relative URLs to absolute URLs
       const newUrls = response.data.map((img) => {
-        const url = img.url.startsWith('http') ? img.url : `${API_URL}${img.url}`;
+        const apiUrl = getApiUrl();
+        const url = img.url.startsWith('http') ? img.url : `${apiUrl}${img.url}`;
+        console.log('Image URL:', url); // Debug log
         return url;
       });
       onChange([...value, ...newUrls]);
@@ -207,6 +215,11 @@ export default function ImageUpload({
                   height={300}
                   className="w-full h-full object-cover"
                   unoptimized
+                  onError={(e) => {
+                    console.error('Image failed to load:', url);
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/assets/images/placeholder.jpg';
+                  }}
                 />
               </div>
               <button
