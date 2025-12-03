@@ -31,8 +31,9 @@ export default function BlogPage() {
     try {
       setLoading(true);
       const categoryParam = selectedCategory ? `&category=${encodeURIComponent(selectedCategory)}` : '';
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const response = await fetch(
-        `http://localhost:8000/api/v1/blog?skip=0&limit=50&published_only=true${categoryParam}`
+        `${API_BASE}/api/v1/blog?skip=0&limit=50&published_only=true${categoryParam}`
       );
       
       if (!response.ok) {
@@ -52,7 +53,8 @@ export default function BlogPage() {
 
   const fetchCategories = React.useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/blog/categories');
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_BASE}/api/v1/blog/categories`);
       if (response.ok) {
         const data = await response.json();
         setCategories(data);

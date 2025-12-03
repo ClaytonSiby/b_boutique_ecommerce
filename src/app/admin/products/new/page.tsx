@@ -44,7 +44,7 @@ export default function NewProductPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await api.get<Category[]>('/api/v1/categories');
+      const response = await api.get<Category[]>('/api/v1/categories/');
       setCategories(response.data || []);
     } catch (error) {
       console.error('Failed to fetch categories:', error);
@@ -71,11 +71,14 @@ export default function NewProductPage() {
         sale_price: formData.sale_price ? parseFloat(formData.sale_price) : null,
       };
 
-      await api.post('/api/v1/products', payload);
+      console.log('Creating product with payload:', payload);
+      await api.post('/api/v1/products/', payload);
       router.push('/admin/products');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Failed to create product:', error);
-      alert('Failed to create product');
+      const err = error as { response?: { data?: { detail?: string } }; message?: string };
+      const errorMessage = err?.response?.data?.detail || err?.message || 'Failed to create product';
+      alert(`Failed to create product: ${errorMessage}`);
     } finally {
       setLoading(false);
     }

@@ -89,13 +89,8 @@ export default function ImageUpload({
         }
       );
 
-      // Convert relative URLs to absolute URLs
-      const newUrls = response.data.map((img) => {
-        const apiUrl = getApiUrl();
-        const url = img.url.startsWith('http') ? img.url : `${apiUrl}${img.url}`;
-        console.log('Image URL:', url); // Debug log
-        return url;
-      });
+      // Store relative URLs in the database, but we'll convert them to absolute for display
+      const newUrls = response.data.map((img) => img.url); // Keep relative paths like /uploads/filename.jpg
       onChange([...value, ...newUrls]);
     } catch (err: unknown) {
       const error = err as { response?: { data?: { detail?: string } } };
@@ -205,18 +200,22 @@ export default function ImageUpload({
       {/* Image Preview Grid */}
       {value.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {value.map((url, index) => (
+          {value.map((url, index) => {
+            // Convert relative URLs to absolute for display
+            const displayUrl = url.startsWith('http') ? url : `${getApiUrl()}${url}`;
+            
+            return (
             <div key={url} className="relative group">
               <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                 <Image
-                  src={url}
+                  src={displayUrl}
                   alt={`Upload ${index + 1}`}
                   width={300}
                   height={300}
                   className="w-full h-full object-cover"
                   unoptimized
                   onError={(e) => {
-                    console.error('Image failed to load:', url);
+                    console.error('Image failed to load:', displayUrl);
                     const target = e.target as HTMLImageElement;
                     target.src = '/assets/images/placeholder.jpg';
                   }}
@@ -231,7 +230,8 @@ export default function ImageUpload({
                 <FontAwesomeIcon icon={faTrash} className="w-4 h-4" />
               </button>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

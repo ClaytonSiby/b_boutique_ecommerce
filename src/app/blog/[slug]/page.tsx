@@ -41,7 +41,8 @@ export default function BlogPostPage() {
   const fetchPost = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/v1/blog/${slug}`);
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_BASE}/api/v1/blog/${slug}`);
       
       if (!response.ok) {
         if (response.status === 404) {

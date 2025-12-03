@@ -30,8 +30,9 @@ function ProfileContent() {
     setSaveMessage('');
 
     try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       // Call API to update user
-      const response = await fetch(`http://localhost:8000/api/v1/users/${user.id}`, {
+      const response = await fetch(`${API_BASE}/api/v1/users/${user.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

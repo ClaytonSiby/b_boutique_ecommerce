@@ -59,8 +59,9 @@ function FavoritesContent() {
     if (!token) return;
 
     try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const response = await fetch(
-        `http://localhost:8000/api/v1/favorites/${productId}`,
+        `${API_BASE}/api/v1/favorites/${productId}`,
         {
           method: 'DELETE',
           headers: {
@@ -84,7 +85,9 @@ function FavoritesContent() {
     if (!token) return;
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/cart/items', {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_BASE}/api/v1/cart/items`, {0';
+      const response = await fetch(`${API_BASE}/api/v1/favorites`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

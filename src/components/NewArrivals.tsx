@@ -42,7 +42,8 @@ export default function NewArrivals() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/v1/categories/');
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${API_BASE}/api/v1/categories/`);
         if (!response.ok) throw new Error('Failed to fetch categories');
         const data = await response.json();
         setCategories(data);
@@ -59,7 +60,8 @@ export default function NewArrivals() {
       setLoading(true);
       setError(null);
       try {
-        let url = 'http://localhost:8000/api/v1/products/?limit=6&is_active=true';
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        let url = `${API_BASE}/api/v1/products/?limit=6&is_active=true`;
         if (selectedCategory) {
           url += `&category_id=${selectedCategory}`;
         }

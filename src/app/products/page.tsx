@@ -80,7 +80,8 @@ export default function ProductsPage() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8000/api/v1/products?skip=0&limit=100&is_active=true');
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_BASE}/api/v1/products/?skip=0&limit=100&is_active=true`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch products');
@@ -99,7 +100,8 @@ export default function ProductsPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/categories?skip=0&limit=50&is_active=true');
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_BASE}/api/v1/categories/?skip=0&limit=50&is_active=true`);
       if (response.ok) {
         const data = await response.json();
         setCategories(data);
@@ -565,8 +567,9 @@ function ProductCard({
     if (!token) return;
 
     try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const response = await fetch(
-        `http://localhost:8000/api/v1/favorites/check/${product.id}`,
+        `${API_BASE}/api/v1/favorites/check/${product.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -603,9 +606,10 @@ function ProductCard({
 
     setIsTogglingFavorite(true);
     try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       if (isFavorited) {
         const response = await fetch(
-          `http://localhost:8000/api/v1/favorites/${product.id}`,
+          `${API_BASE}/api/v1/favorites/${product.id}`,
           {
             method: 'DELETE',
             headers: {
@@ -618,7 +622,7 @@ function ProductCard({
           setIsFavorited(false);
         }
       } else {
-        const response = await fetch('http://localhost:8000/api/v1/favorites', {
+        const response = await fetch(`${API_BASE}/api/v1/favorites`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
