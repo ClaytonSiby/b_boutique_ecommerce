@@ -43,7 +43,7 @@ interface Product {
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const slug = params?.slug as string;
+  const id = params?.id as string;
   const { isAuthenticated, token } = useAuth();
   const { addToCart } = useCart();
 
@@ -60,7 +60,7 @@ export default function ProductDetailPage() {
   const fetchProduct = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`${API_BASE_URL}/products/slug/${slug}`);
+      const response = await fetch(`${API_BASE_URL}/api/v1/products/${id}`);
 
       if (!response.ok) {
         throw new Error('Product not found');
@@ -74,7 +74,7 @@ export default function ProductDetailPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [slug]);
+  }, [id]);
 
   const checkFavoriteStatus = useCallback(async () => {
     if (!token || !product) return;

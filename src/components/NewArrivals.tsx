@@ -160,7 +160,7 @@ export default function NewArrivals() {
               {products.map((product) => (
                 <Link
                   key={product.id}
-                  href={`/products/${product.slug}`}
+                  href={`/products/${product.id}`}
                   className="group bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:shadow-[#b88e72]/20 transition-all duration-300 hover:-translate-y-2 border border-gray-100"
                 >
                   <div className="bg-linear-to-br from-[#e7d6c6] to-[#d4c5b6] h-64 flex items-center justify-center overflow-hidden relative">

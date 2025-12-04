@@ -667,7 +667,7 @@ function ProductCard({
       <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col sm:flex-row">
         {/* Image */}
         <div className="relative w-full sm:w-64 h-64 sm:h-auto overflow-hidden shrink-0">
-          <Link href={`/products/${product.slug}`}>
+          <Link href={`/products/${product.id}`}>
             <Image
               src={productImage}
               alt={product.name}
@@ -698,7 +698,7 @@ function ProductCard({
         {/* Content */}
         <div className="p-6 flex-1 flex flex-col justify-between">
           <div>
-            <Link href={`/products/${product.slug}`}>
+            <Link href={`/products/${product.id}`}>
               <h3 className="text-xl font-bold text-[#3d2c29] mb-2 group-hover:text-[#b88e72] transition-colors line-clamp-2">
                 {product.name}
               </h3>
@@ -739,7 +739,7 @@ function ProductCard({
     <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
       {/* Image */}
       <div className="relative h-80 overflow-hidden">
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/products/${product.id}`}>
           <Image
             src={productImage}
             alt={product.name}
@@ -769,7 +769,7 @@ function ProductCard({
 
       {/* Content */}
       <div className="p-6">
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/products/${product.id}`}>
           <h3 className="text-lg font-bold text-[#3d2c29] mb-2 group-hover:text-[#b88e72] transition-colors line-clamp-2 min-h-14">
             {product.name}
           </h3>

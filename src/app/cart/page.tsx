@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faTrash, faPlus, faMinus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useCart } from '@/hooks/useCart';
+import { getImageUrl } from '@/lib/utils/image';
 
 function CartContent() {
   const { cart, cartItemsCount, isLoading, updateCartItem, removeFromCart, clearCart } = useCart();
@@ -76,7 +77,7 @@ function CartContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#b88e72] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-[#3d2c29] text-lg">Loading cart...</p>
@@ -86,7 +87,7 @@ function CartContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Page Header */}
         <div className="text-center mb-12">
@@ -151,12 +152,12 @@ function CartContent() {
                       {/* Product Image */}
                       <Link
                         href={`/products/${product?.slug || item.product_id}`}
-                        className="flex-shrink-0"
+                        className="shrink-0"
                       >
                         <div className="relative w-24 h-24 sm:w-32 sm:h-32 bg-gray-100 rounded-lg overflow-hidden">
                           {product?.images && product.images.length > 0 ? (
                             <Image
-                              src={product.images[0]}
+                              src={getImageUrl(product.images[0])}
                               alt={product.name || 'Product'}
                               fill
                               className="object-cover"
@@ -304,7 +305,7 @@ export default function CartPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
+        <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#f7e6e1] via-white to-[#f7e6e1] pt-24">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-[#b88e72] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-[#3d2c29] text-lg">Loading...</p>

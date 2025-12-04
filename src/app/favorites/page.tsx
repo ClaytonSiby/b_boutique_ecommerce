@@ -178,7 +178,7 @@ function FavoritesContent() {
                 className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 {/* Product Image */}
-                <Link href={`/products/${product.slug}`} className="block relative">
+                <Link href={`/products/${product.id}`} className="block relative">
                   <div className="relative h-64 w-full overflow-hidden bg-gray-100">
                     {product.images && product.images.length > 0 ? (
                       <Image
@@ -204,7 +204,7 @@ function FavoritesContent() {
 
                 {/* Product Info */}
                 <div className="p-4">
-                  <Link href={`/products/${product.slug}`}>
+                  <Link href={`/products/${product.id}`}>
                     <h3 className="font-semibold text-[#3d2c29] mb-2 line-clamp-2 hover:text-[#b88e72] transition-colors">
                       {product.name}
                     </h3>
