@@ -11,7 +11,7 @@ import { useCart } from '@/hooks/useCart';
 
 // Helper to convert image URLs to absolute URLs
 const getImageUrl = (url: string | null): string => {
-  if (!url) return '/assets/images/placeholder.jpg';
+  if (!url) return '/assets/images/placeholder.svg';
   if (url.startsWith('http')) return url;
   
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -561,7 +561,7 @@ function ProductCard({
   const displayPrice = product.sale_price || product.price;
   const productImage = product.images && product.images.length > 0 
     ? getImageUrl(product.images[0])
-    : '/assets/images/placeholder.jpg';
+    : '/assets/images/placeholder.svg';
 
   const checkFavoriteStatus = React.useCallback(async () => {
     if (!token) return;

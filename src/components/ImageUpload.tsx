@@ -217,7 +217,7 @@ export default function ImageUpload({
                   onError={(e) => {
                     console.error('Image failed to load:', displayUrl);
                     const target = e.target as HTMLImageElement;
-                    target.src = '/assets/images/placeholder.jpg';
+                    target.src = '/assets/images/placeholder.svg';
                   }}
                 />
               </div>

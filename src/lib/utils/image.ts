@@ -11,7 +11,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 export function getImageUrl(imagePath: string | null | undefined): string {
     // Return placeholder if no image
     if (!imagePath) {
-        return '/assets/images/placeholder.jpg';
+        return '/assets/images/placeholder.svg';
     }
 
     // If it's already a full URL, return as-is

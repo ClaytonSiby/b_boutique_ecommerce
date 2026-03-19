@@ -63,9 +63,9 @@ export default function LandingPage() {
             <Link href="/products/deal" className="px-6 py-2 bg-[#b88e72] text-white rounded-full shadow hover:bg-[#a67c52] text-sm sm:text-base">Shop Now</Link>
           </div>
           <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 w-full md:w-auto">
-            <Image src="/assets/images/deal1.jpg" alt="Deal 1" width={120} height={180} className="rounded-2xl object-cover shadow-2xl hover:shadow-[#b88e72]/40 transition-all duration-300 hover:scale-110 ring-2 ring-white/30 w-full h-auto" />
-            <Image src="/assets/images/deal2.jpg" alt="Deal 2" width={120} height={180} className="rounded-2xl object-cover shadow-2xl hover:shadow-[#b88e72]/40 transition-all duration-300 hover:scale-110 ring-2 ring-white/30 w-full h-auto" />
-            <Image src="/assets/images/deal3.jpg" alt="Deal 3" width={120} height={180} className="rounded-2xl object-cover shadow-2xl hover:shadow-[#b88e72]/40 transition-all duration-300 hover:scale-110 ring-2 ring-white/30 w-full h-auto" />
+            <Image src="/assets/images/handbag.jpg" alt="Deal 1" width={120} height={180} className="rounded-2xl object-cover shadow-2xl hover:shadow-[#b88e72]/40 transition-all duration-300 hover:scale-110 ring-2 ring-white/30 w-full h-auto" />
+            <Image src="/assets/images/perfume.jpg" alt="Deal 2" width={120} height={180} className="rounded-2xl object-cover shadow-2xl hover:shadow-[#b88e72]/40 transition-all duration-300 hover:scale-110 ring-2 ring-white/30 w-full h-auto" />
+            <Image src="/assets/images/colour_dress.jpg" alt="Deal 3" width={120} height={180} className="rounded-2xl object-cover shadow-2xl hover:shadow-[#b88e72]/40 transition-all duration-300 hover:scale-110 ring-2 ring-white/30 w-full h-auto" />
           </div>
         </div>
       </section>
