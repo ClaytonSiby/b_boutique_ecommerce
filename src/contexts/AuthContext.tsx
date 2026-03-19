@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Load token from localStorage on mount
   useEffect(() => {
-    const storedToken = localStorage.getItem('auth_token');
+    const storedToken = localStorage.getItem('access_token');
     if (storedToken) {
       fetchCurrentUser(storedToken);
     } else {
@@ -72,13 +72,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setToken(authToken);
       } else {
         // Token is invalid, clear it
-        localStorage.removeItem('auth_token');
+        localStorage.removeItem('access_token');
         setToken(null);
         setUser(null);
       }
     } catch (error) {
       console.error('Error fetching user:', error);
-      localStorage.removeItem('auth_token');
+      localStorage.removeItem('access_token');
       setToken(null);
       setUser(null);
     } finally {
@@ -110,7 +110,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const authToken = data.access_token;
 
       // Store token
-      localStorage.setItem('auth_token', authToken);
+      localStorage.setItem('access_token', authToken);
       setToken(authToken);
 
       // Fetch user data
@@ -149,7 +149,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Logout function
   const logout = () => {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem('access_token');
     setToken(null);
     setUser(null);
     router.push('/');
