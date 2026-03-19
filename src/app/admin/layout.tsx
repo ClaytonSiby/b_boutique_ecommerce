@@ -56,6 +56,7 @@ export default function AdminLayout({
     { name: 'Products', href: '/admin/products', icon: faBox },
     { name: 'Categories', href: '/admin/categories', icon: faList },
     { name: 'Orders', href: '/admin/orders', icon: faShoppingCart },
+    { name: 'Blogs', href: '/admin/blogs', icon: faList },
     { name: 'Users', href: '/admin/users', icon: faUsers },
     { name: 'Analytics', href: '/admin/analytics', icon: faChartLine },
     { name: 'Settings', href: '/admin/settings', icon: faCog },

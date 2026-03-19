@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {api} from '@/lib/api';
 import { formatCurrency } from '@/lib/utils/currency';
+import Link from 'next/link';
 
 interface Stats {
   totalProducts: number;
@@ -33,18 +34,17 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      // You'll need to create these endpoints
       const [products, orders, users] = await Promise.all([
-        api.get('/products?limit=1'),
-        api.get('/orders?limit=1'),
-        api.get('/users?limit=1'),
+          api.get('/products/stats'),
+          api.get('/orders/stats'),
+          api.get('/users/stats'),
       ]);
 
       setStats({
         totalProducts: products.data.total || 0,
         totalOrders: orders.data.total || 0,
         totalUsers: users.data.total || 0,
-        totalRevenue: 0, // Calculate from orders
+          totalRevenue: orders.data.total_revenue || 0,
       });
     } catch (error) {
       console.error('Failed to fetch stats:', error);
@@ -135,7 +135,7 @@ export default function AdminDashboard() {
       <div className="mt-6 sm:mt-8">
         <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          <a
+          <Link
             href="/admin/products/new"
             className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border-2 border-transparent hover:border-[#b88e72]"
           >
@@ -143,8 +143,8 @@ export default function AdminDashboard() {
             <p className="mt-1 text-xs sm:text-sm text-gray-600">
               Create a new product listing
             </p>
-          </a>
-          <a
+          </Link>
+          <Link
             href="/admin/orders"
             className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border-2 border-transparent hover:border-[#b88e72]"
           >
@@ -152,7 +152,7 @@ export default function AdminDashboard() {
             <p className="mt-1 text-xs sm:text-sm text-gray-600">
               Manage customer orders
             </p>
-          </a>
+          </Link>
           <a
             href="/admin/categories"
             className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow border-2 border-transparent hover:border-[#b88e72]"
