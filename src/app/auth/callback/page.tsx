@@ -12,7 +12,7 @@ function AuthCallbackContent() {
     
     if (token) {
       // Store the token with the correct key that AuthContext expects
-      localStorage.setItem('auth_token', token);
+      localStorage.setItem('access_token', token);
       
       // Force a page reload to trigger AuthContext to fetch user data
       window.location.href = '/';
