@@ -37,7 +37,7 @@ class ApiClient {
                     // Clear auth data and redirect to login
                     this.clearAuth();
                     if (typeof window !== 'undefined') {
-                        window.location.href = '/auth/login';
+                        window.location.href = '/login';
                     }
                 }
                 return Promise.reject(this.handleError(error));

@@ -26,15 +26,7 @@ api.interceptors.request.use(
 // Response interceptor for error handling
 api.interceptors.response.use(
     (response) => response,
-    (error) => {
-        if (error.response?.status === 401) {
-            // Clear token and redirect to login with return URL
-            localStorage.removeItem('auth_token');
-            const returnUrl = encodeURIComponent(window.location.pathname);
-            window.location.href = `/login?returnUrl=${returnUrl}`;
-        }
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 export interface RegisterData {
